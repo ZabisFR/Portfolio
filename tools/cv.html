@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>CV — Evan Pouteau</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  @page { size: A4; margin: 0; }
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: Inter, system-ui, sans-serif; color: #17202e; font-size: 10.2pt; line-height: 1.5;
+         width: 210mm; min-height: 297mm; }
+
+  header { background: #0d1524; color: #fff; padding: 16mm 16mm 12mm; }
+  header h1 { font-size: 26pt; letter-spacing: -.02em; font-weight: 700; }
+  header .role { font-size: 12pt; color: #7fd3ff; font-weight: 600; margin-top: 3mm; }
+  header .meta { margin-top: 6mm; display: flex; flex-wrap: wrap; gap: 3mm 7mm; font-size: 9pt; color: #b7c1d4; }
+  header .meta a { color: #b7c1d4; text-decoration: none; }
+  .avail { display: inline-block; margin-top: 5mm; font-size: 8.6pt; font-weight: 700;
+           color: #0d1524; background: #4cc2ff; padding: 1.6mm 4mm; border-radius: 99px; }
+
+  main { padding: 10mm 16mm 14mm; }
+  section { margin-bottom: 7mm; break-inside: avoid; }
+  h2 { font-size: 9pt; text-transform: uppercase; letter-spacing: .12em; color: #0d7fb8;
+       border-bottom: .4mm solid #dbe2ed; padding-bottom: 1.6mm; margin-bottom: 4mm; font-weight: 700; }
+
+  .item { margin-bottom: 4.5mm; break-inside: avoid; }
+  .item .top { display: flex; justify-content: space-between; align-items: baseline; gap: 5mm; }
+  .item h3 { font-size: 10.8pt; font-weight: 700; }
+  .item .when { font-size: 8.4pt; color: #64708a; white-space: nowrap; font-weight: 600; }
+  .item .sub { font-size: 9pt; color: #0d7fb8; font-weight: 600; margin-top: .6mm; }
+  .item p { font-size: 9.4pt; color: #3c4759; margin-top: 1.4mm; }
+  .item ul { margin: 1.6mm 0 0 4mm; padding: 0; font-size: 9.2pt; color: #3c4759; }
+  .item li { margin-bottom: .9mm; }
+  .stack { font-size: 8.4pt; color: #64708a; margin-top: 1.4mm; font-weight: 500; }
+
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm 9mm; }
+  .skill { font-size: 9.2pt; display: flex; justify-content: space-between; gap: 4mm;
+           border-bottom: .3mm dotted #dbe2ed; padding-bottom: 1.2mm; }
+  .skill b { font-weight: 600; }
+  .skill span { color: #64708a; font-size: 8.6pt; white-space: nowrap; }
+  .todo { background: #fff3cd; padding: 0 1mm; border-radius: 1mm; }
+  footer { padding: 0 16mm 10mm; font-size: 7.6pt; color: #8f99ab; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Evan Pouteau</h1>
+  <div class="role">Développeur web front-end · Étudiant en BUT MMI</div>
+  <div class="meta">
+    <span>pouteaue78@gmail.com</span>
+    <span>linkedin.com/in/evan-pouteau-06a9a7342</span>
+    <span>evanpouteau.vercel.app</span>
+    <span class="todo">[Ville / mobilité]</span>
+  </div>
+  <div class="avail">Recherche une alternance à partir de septembre 2027</div>
+</header>
+
+<main>
+
+<section>
+  <h2>Profil</h2>
+  <p style="font-size:9.6pt;color:#3c4759">Étudiant en deuxième année de BUT MMI, je conçois et développe des applications web de bout en bout&nbsp;: maquette, interface, base de données et mise en production. J'ai deux applications personnelles en service, construites seul avec Next.js et Supabase, que j'utilise au quotidien.</p>
+</section>
+
+<section>
+  <h2>Projets</h2>
+
+  <div class="item">
+    <div class="top"><h3>Arabe égyptien — application d'apprentissage</h3><span class="when">2026 · en production</span></div>
+    <div class="sub">Conception, développement et contenu · projet personnel</div>
+    <ul>
+      <li>Parcours de 30 modules et 141 leçons (niveaux A1 à B2), glossaire de 554 mots, test de placement et quiz de validation.</li>
+      <li>Import de 15 fichiers JSON aux structures hétérogènes vers un schéma PostgreSQL, avec table de correspondances documentée.</li>
+      <li>Authentification et politiques d'accès par ligne (RLS) sur l'ensemble des tables ; aucune clé privilégiée déployée en production.</li>
+    </ul>
+    <div class="stack">Next.js 16 · React 19 · TypeScript · Tailwind CSS · Supabase · PostgreSQL · Vercel</div>
+  </div>
+
+  <div class="item">
+    <div class="top"><h3>Muscu — carnet d'entraînement</h3><span class="when">2026 · en production</span></div>
+    <div class="sub">Conception et développement · projet personnel</div>
+    <ul>
+      <li>Programme de 4 séances et 22 exercices stocké en base plutôt qu'en dur : modifiable sans redéploiement.</li>
+      <li>Validation série par série (charge et répétitions), minuteur de repos automatique, photo de démonstration par exercice.</li>
+      <li>Page de progression avec courbe de charge par exercice ; application mono-utilisateur, inscriptions publiques désactivées.</li>
+    </ul>
+    <div class="stack">Next.js 16 · React 19 · TypeScript · Tailwind CSS · Supabase · Recharts · Vercel</div>
+  </div>
+
+  <div class="item">
+    <div class="top"><h3>Lobby de l'urbex — plateforme de référencement</h3><span class="when">2026</span></div>
+    <div class="sub">Développement · projet universitaire</div>
+    <p>Site dynamique de référencement de lieux d'exploration urbaine : pages générées côté serveur et contenus stockés en base relationnelle.</p>
+    <div class="stack">PHP · SQL · JavaScript</div>
+  </div>
+
+  <div class="item">
+    <div class="top"><h3>Musée Crozatier — identité visuelle</h3><span class="when">2026</span></div>
+    <div class="sub">Direction artistique en équipe · projet universitaire</div>
+    <p>Modernisation de l'image du musée : charte graphique, logo et déclinaison sur affiche A3.</p>
+    <div class="stack">Illustrator · InDesign</div>
+  </div>
+
+  <div class="item">
+    <div class="top"><h3>Projet Fillia — étude UX</h3><span class="when">2026</span></div>
+    <div class="sub">Recherche utilisateur · projet universitaire</div>
+    <p>Évaluation d'une application de soin de la peau assistée par IA : entretiens menés sur le terrain et synthèse des résultats.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Compétences</h2>
+  <div class="cols">
+    <div class="skill"><b>HTML / CSS</b><span>Avancé</span></div>
+    <div class="skill"><b>JavaScript</b><span>Avancé</span></div>
+    <div class="skill"><b>React / Next.js</b><span>Intermédiaire</span></div>
+    <div class="skill"><b>TypeScript</b><span>Intermédiaire</span></div>
+    <div class="skill"><b>PostgreSQL / SQL</b><span>Intermédiaire</span></div>
+    <div class="skill"><b>Supabase (Auth, RLS)</b><span>Intermédiaire</span></div>
+    <div class="skill"><b>Tailwind CSS</b><span>Intermédiaire</span></div>
+    <div class="skill"><b>Git / Vercel</b><span>Intermédiaire</span></div>
+    <div class="skill"><b>Python</b><span>Intermédiaire</span></div>
+    <div class="skill"><b>PHP · C++</b><span>Notions</span></div>
+    <div class="skill"><b>Photoshop · Illustrator · InDesign</b><span>Intermédiaire</span></div>
+    <div class="skill"><b>UX / recherche utilisateur</b><span>Intermédiaire</span></div>
+  </div>
+</section>
+
+<section>
+  <h2>Formation</h2>
+  <div class="item">
+    <div class="top"><h3>BUT Métiers du Multimédia et de l'Internet</h3><span class="when">2025 – 2028</span></div>
+    <div class="sub"><span class="todo">[Nom de l'IUT — à compléter]</span> · 2ᵉ année en cours</div>
+    <p>Développement web, design d'interface, UX et production multimédia.</p>
+  </div>
+  <div class="item">
+    <div class="top"><h3><span class="todo">[Baccalauréat — série et année]</span></h3><span class="when"><span class="todo">[année]</span></span></div>
+  </div>
+</section>
+
+<section>
+  <h2>Langues</h2>
+  <div class="cols">
+    <div class="skill"><b>Français</b><span>Langue maternelle (C2)</span></div>
+    <div class="skill"><b>Anglais</b><span>B1</span></div>
+    <div class="skill"><b>Arabe égyptien</b><span>En cours d'apprentissage</span></div>
+  </div>
+</section>
+
+</main>
+
+<footer>Les champs surlignés en jaune sont à compléter avant diffusion. Ce CV est généré depuis tools/cv.html — modifiez ce fichier puis lancez <b>node tools/build-cv.mjs</b>.</footer>
+
+</body>
+</html>

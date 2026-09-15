@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gesture AI — Interface gestuelle · Evan Pouteau</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <link rel="stylesheet" href="style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <video id="webcam" autoplay playsinline muted style="display: none;"></video>
+
+    <canvas id="output-canvas"></canvas>
+
+    <div id="ui-layer">
+
+        <!-- Barre supérieure -->
+        <header class="lab-topbar">
+            <a class="lab-brand" href="../index.html">
+                <span class="brand-mark">EP</span>
+                <span class="brand-back"><i class="ph-bold ph-arrow-left"></i> retour au portfolio</span>
+            </a>
+            <div class="lab-title">gesture_ai<span class="ext">.exe</span></div>
+            <div class="lab-status" id="lab-status"><span class="dot off"></span> caméra : en attente</div>
+        </header>
+
+        <!-- Écran de démarrage -->
+        <div class="start-screen" id="start-screen">
+            <div class="start-card">
+                <div class="start-glyph"><i class="ph-duotone ph-hand-pointing"></i></div>
+                <p class="start-kicker">// expérimentation · vision par ordinateur</p>
+                <h1>Interface gestuelle</h1>
+                <p class="start-desc">
+                    Pilotez ce mini-portfolio <em>avec votre main</em>, sans souris ni clavier.
+                    La caméra suit le bout de votre index.
+                </p>
+                <ul class="start-steps">
+                    <li><i class="ph-bold ph-cursor"></i> Pointez pour déplacer le curseur</li>
+                    <li><i class="ph-bold ph-timer"></i> Maintenez sur un bloc pour l'ouvrir</li>
+                    <li><i class="ph-bold ph-hand-swipe-left"></i> Balayez pour fermer</li>
+                </ul>
+                <button id="start-btn" class="lab-btn"><i class="ph-bold ph-video-camera"></i> Activer la caméra</button>
+                <p class="start-note"><i class="ph-fill ph-lock-simple"></i> Traitement 100% local — aucune image n'est envoyée en ligne.</p>
+                <p class="start-error hidden" id="start-error"></p>
+            </div>
+        </div>
+
+        <!-- Aperçu caméra (PiP) avec squelette de la main -->
+        <div class="pip hidden" id="pip">
+            <canvas id="pip-canvas" width="240" height="180"></canvas>
+            <span class="pip-label"><span class="pip-dot"></span> VISION — votre main</span>
+        </div>
+
+        <!-- Aide gestuelle -->
+        <div class="hints hidden" id="hints">
+            <span><i class="ph-bold ph-cursor"></i> pointez</span>
+            <span class="sep">/</span>
+            <span><i class="ph-bold ph-timer"></i> maintenez</span>
+            <span class="sep">/</span>
+            <span><i class="ph-bold ph-hand-swipe-left"></i> balayez pour fermer</span>
+        </div>
+
+        <!-- Panneau d'information -->
+        <div id="info-panel" class="hidden">
+            <div class="panel-bar">
+                <span class="td r"></span><span class="td y"></span><span class="td g"></span>
+                <span class="panel-file" id="panel-file">readme.md</span>
+            </div>
+            <div class="panel-inner">
+                <h2 id="panel-title">Titre</h2>
+                <div id="panel-content">Contenu…</div>
+                <p class="close-hint"><i class="ph-bold ph-hand-swipe-left"></i> Éloignez ou balayez la main pour fermer.</p>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

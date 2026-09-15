@@ -1,0 +1,521 @@
+<!doctype html>
+<html lang="fr" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Evan Pouteau — Développeur web & étudiant MMI</title>
+
+<meta name="description" content="Portfolio interactif d'Evan Pouteau, étudiant en BUT MMI et développeur web. Applications Next.js et Supabase, projets design, UX et game design — présentés sous forme de système d'exploitation.">
+<meta name="author" content="Evan Pouteau">
+<meta name="theme-color" content="#0b0f19">
+<link rel="canonical" href="https://evanpouteau.vercel.app/">
+
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:site_name" content="Evan Pouteau">
+<meta property="og:title" content="Evan Pouteau — Développeur web & étudiant MMI">
+<meta property="og:description" content="Un portfolio qui se visite comme un système d'exploitation : applications Next.js + Supabase, projets design et UX.">
+<meta property="og:url" content="https://evanpouteau.vercel.app/">
+<meta property="og:image" content="https://evanpouteau.vercel.app/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="EvanOS — le portfolio d'Evan Pouteau sous forme de bureau">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Evan Pouteau — Développeur web & étudiant MMI">
+<meta name="twitter:description" content="Un portfolio qui se visite comme un système d'exploitation.">
+<meta name="twitter:image" content="https://evanpouteau.vercel.app/assets/og.png">
+
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/assets/icon-180.png">
+<link rel="manifest" href="/site.webmanifest">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Cascadia+Code:wght@400;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="/styles.css">
+<script type="module" src="/js/main.js" defer></script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Evan Pouteau",
+  "jobTitle": "Étudiant en BUT MMI — développeur web",
+  "email": "mailto:pouteaue78@gmail.com",
+  "url": "https://evanpouteau.vercel.app/",
+  "sameAs": ["https://www.linkedin.com/in/evan-pouteau-06a9a7342"],
+  "knowsLanguage": ["fr", "en"]
+}
+</script>
+</head>
+<body>
+
+<a class="skip-link" href="#desktop">Aller au contenu principal</a>
+
+<!-- ============ ICÔNES SVG ============ -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v1"/></symbol>
+  <symbol id="i-terminal" viewBox="0 0 24 24"><path d="m5 8 4 4-4 4"/><path d="M12 16h7"/><rect x="2" y="3" width="20" height="18" rx="2.5"/></symbol>
+  <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7.5A2.5 2.5 0 0 1 5.5 5h3.2a2 2 0 0 1 1.5.7l1.1 1.3h7.2A2.5 2.5 0 0 1 21 9.5v8A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5z"/></symbol>
+  <symbol id="i-apps" viewBox="0 0 24 24"><rect x="3" y="3" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="2"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="2"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="m3 7 8.1 5.4a1.6 1.6 0 0 0 1.8 0L21 7"/></symbol>
+  <symbol id="i-scale" viewBox="0 0 24 24"><path d="M12 3v18M7 21h10M5 7h14M5 7l-2.5 6a3.2 3.2 0 0 0 5 0zM19 7l2.5 6a3.2 3.2 0 0 1-5 0z"/><path d="M12 5.5 7 7M12 5.5 17 7"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5"/><path d="M4 17v2.5A1.5 1.5 0 0 0 5.5 21h13a1.5 1.5 0 0 0 1.5-1.5V17"/></symbol>
+  <symbol id="i-external" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-8.5 8.5"/><path d="M18 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"/></symbol>
+  <symbol id="i-linkedin" viewBox="0 0 24 24"><rect x="2.5" y="2.5" width="19" height="19" rx="3"/><path d="M7 10v7M7 7v.01M11.5 17v-4a2.5 2.5 0 0 1 5 0v4M11.5 10v7"/></symbol>
+  <symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 14.5a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-1.8-.3 1.6 1.6 0 0 0-1 1.5v.2a2 2 0 1 1-4 0v-.1a1.6 1.6 0 0 0-1-1.5 1.6 1.6 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0 .3-1.8 1.6 1.6 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.6 1.6 0 0 0 1.5-1 1.6 1.6 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.6 1.6 0 0 0 1.8.3H9a1.6 1.6 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.6 1.6 0 0 0 1 1.5 1.6 1.6 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0-.3 1.8V9a1.6 1.6 0 0 0 1.5 1h.2a2 2 0 1 1 0 4h-.1a1.6 1.6 0 0 0-1.5 1z"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M19.1 4.9l-1.8 1.8M6.7 17.3l-1.8 1.8"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11"/></symbol>
+  <symbol id="i-volume" viewBox="0 0 24 24"><path d="M11 5 6.5 9H3v6h3.5L11 19z"/><path d="M15.5 9.5a3.5 3.5 0 0 1 0 5M18.5 6.5a7.5 7.5 0 0 1 0 11"/></symbol>
+  <symbol id="i-mute" viewBox="0 0 24 24"><path d="M11 5 6.5 9H3v6h3.5L11 19z"/><path d="m16 10 5 4M21 10l-5 4"/></symbol>
+  <symbol id="i-wifi" viewBox="0 0 24 24"><path d="M2.5 9a15 15 0 0 1 19 0M5.5 12.5a10.5 10.5 0 0 1 13 0M8.5 16a6 6 0 0 1 7 0"/><circle cx="12" cy="19.5" r=".8" fill="currentColor"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m16.5 16.5 4 4"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
+  <symbol id="i-list" viewBox="0 0 24 24"><path d="M9 6h12M9 12h12M9 18h12M4 6h.01M4 12h.01M4 18h.01"/></symbol>
+  <symbol id="i-back" viewBox="0 0 24 24"><path d="M19 12H5m0 0 6-6m-6 6 6 6"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M4 10.5 12 4l8 6.5V19a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 19z"/></symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18 15 15 0 0 1 0-18"/></symbol>
+  <symbol id="i-chip" viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10" rx="1.5"/><rect x="3.5" y="3.5" width="17" height="17" rx="3"/><path d="M9.5 3.5v-2M14.5 3.5v-2M9.5 22.5v-2M14.5 22.5v-2M3.5 9.5h-2M3.5 14.5h-2M22.5 9.5h-2M22.5 14.5h-2"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="11" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4.5v15l12-7.5z"/></symbol>
+</svg>
+
+<canvas id="bg-canvas" aria-hidden="true"></canvas>
+<div id="cursor-glow" aria-hidden="true"></div>
+
+<!-- ============ DÉMARRAGE ============ -->
+<div id="boot" class="boot" role="status" aria-live="polite">
+  <div class="boot-inner">
+    <div class="boot-logo" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+    <div class="boot-name">EvanOS</div>
+    <div class="boot-bar"><i></i></div>
+    <div class="boot-msg" data-i18n="boot.msg">Démarrage…</div>
+  </div>
+  <button class="boot-skip" id="boot-skip" data-i18n="boot.skip">Passer l'intro</button>
+</div>
+
+<!-- ============ ÉCRAN DE CONNEXION ============ -->
+<div id="lock" class="lock" hidden>
+  <div class="lock-clock"><div class="lock-time" id="lock-time">00:00</div><div class="lock-date" id="lock-date"></div></div>
+  <div class="lock-user">
+    <img src="/assets/images/profil.webp" width="112" height="112" alt="" class="lock-avatar" decoding="async">
+    <div class="lock-name">Evan Pouteau</div>
+    <button class="btn btn-primary" id="lock-enter" data-i18n="lock.enter">Se connecter</button>
+    <p class="lock-hint" data-i18n="lock.hint">Aucun mot de passe. Bienvenue.</p>
+  </div>
+</div>
+
+<!-- ============ BARRE D'ÉTAT MOBILE ============ -->
+<div class="statusbar" aria-hidden="true">
+  <span id="sb-time">00:00</span>
+  <span class="sb-right"><svg class="ic"><use href="#i-wifi"/></svg><span class="sb-batt"></span></span>
+</div>
+
+<!-- ============ BUREAU ============ -->
+<main id="desktop" class="desktop">
+  <h1 class="sr-only">Evan Pouteau — portfolio</h1>
+  <ul class="desktop-icons" role="list">
+    <li><button class="desktop-icon" data-open="win-about"><span class="ic-tile"><svg class="ic"><use href="#i-user"/></svg></span><span class="ic-label">Ce PC</span></button></li>
+    <li><button class="desktop-icon" data-open="win-apps"><span class="ic-tile accent"><svg class="ic"><use href="#i-apps"/></svg></span><span class="ic-label" data-i18n="icon.apps">Mes applications</span></button></li>
+    <li><button class="desktop-icon" data-open="win-projects"><span class="ic-tile"><svg class="ic"><use href="#i-folder"/></svg></span><span class="ic-label" data-i18n="icon.projects">Projets</span></button></li>
+    <li><button class="desktop-icon" data-open="win-terminal"><span class="ic-tile"><svg class="ic"><use href="#i-terminal"/></svg></span><span class="ic-label">Terminal</span></button></li>
+    <li><button class="desktop-icon" data-open="win-contact"><span class="ic-tile"><svg class="ic"><use href="#i-mail"/></svg></span><span class="ic-label">Contact</span></button></li>
+  </ul>
+  <p class="desktop-hint" data-i18n="desktop.hint">Double-cliquez, glissez les fenêtres, ou tapez <kbd>?</kbd> pour les raccourcis.</p>
+</main>
+
+<!-- ============ FENÊTRES ============ -->
+
+<!-- À PROPOS -->
+<section class="os-window" id="win-about" role="dialog" aria-labelledby="t-about" data-w="720" data-h="560" data-x="120" data-y="80" hidden>
+  <header class="win-head">
+    <div class="win-title" id="t-about"><svg class="ic"><use href="#i-user"/></svg><span data-i18n="win.about">Ce PC — Evan Pouteau</span></div>
+    <div class="win-btns"></div>
+  </header>
+  <div class="win-body">
+    <div class="about-hero">
+      <img src="/assets/images/profil.webp" width="120" height="120" alt="Portrait d'Evan Pouteau" class="about-avatar" loading="lazy" decoding="async">
+      <div>
+        <h2 class="h1">Evan Pouteau</h2>
+        <p class="lede" data-i18n="about.role">Étudiant en BUT MMI · Développeur web front-end</p>
+        <p class="badge-avail"><span class="dot"></span><span data-i18n="about.avail">En recherche d'une alternance pour septembre 2027</span></p>
+      </div>
+    </div>
+
+    <p data-i18n="about.p1">Je construis des interfaces web et des applications complètes, de la maquette à la mise en production. J'ai commencé par le HTML/CSS en autodidacte, le BUT MMI m'a apporté le design et l'UX, et mes projets personnels le reste : React, TypeScript, bases de données, déploiement.</p>
+    <p data-i18n="about.p2">Ce que j'aime : les projets que je peux mener de bout en bout. Les deux applications ci-dessous tournent en production et je les utilise tous les jours — c'est la meilleure façon que j'ai trouvée d'apprendre pour de vrai.</p>
+
+    <h3 class="h3" data-i18n="about.sysinfo">Informations système</h3>
+    <dl class="spec">
+      <dt data-i18n="about.k1">Formation</dt><dd data-i18n="about.v1">BUT Métiers du Multimédia et de l'Internet — 2ᵉ année (2026-2027)</dd>
+      <dt data-i18n="about.k2">Spécialité</dt><dd data-i18n="about.v2">Développement web &amp; dispositifs interactifs</dd>
+      <dt data-i18n="about.k3">Statut</dt><dd data-i18n="about.v3">Recherche une alternance à partir de septembre 2027</dd>
+      <dt data-i18n="about.k4">Langues</dt><dd data-i18n="about.v4">Français (langue maternelle) · Anglais (B1) · Arabe égyptien (en cours)</dd>
+      <dt data-i18n="about.k5">En production</dt><dd data-i18n="about.v5">2 applications Next.js + Supabase déployées sur Vercel</dd>
+    </dl>
+
+    <div class="row-actions">
+      <a class="btn btn-primary" href="/assets/docs/CV-Evan-Pouteau.pdf" download><svg class="ic"><use href="#i-download"/></svg><span data-i18n="cta.cv">Télécharger le CV</span></a>
+      <button class="btn" data-open="win-apps"><svg class="ic"><use href="#i-apps"/></svg><span data-i18n="cta.apps">Voir mes applications</span></button>
+      <button class="btn" data-open="win-contact"><svg class="ic"><use href="#i-mail"/></svg><span data-i18n="cta.contact">Me contacter</span></button>
+    </div>
+  </div>
+</section>
+
+<!-- TERMINAL -->
+<section class="os-window win-term" id="win-terminal" role="dialog" aria-labelledby="t-term" data-w="680" data-h="520" data-x="180" data-y="130" hidden>
+  <header class="win-head">
+    <div class="win-title" id="t-term"><svg class="ic"><use href="#i-terminal"/></svg> Windows PowerShell</div>
+    <div class="win-btns"></div>
+  </header>
+  <div class="win-body term-body" id="term-body">
+    <div id="term-out" aria-live="polite"></div>
+    <label class="term-input-line" for="term-input">
+      <span class="ps-prompt">PS <span class="ps-path">C:\Users\Evan&gt;</span></span>
+      <input id="term-input" class="term-input" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Invite de commande">
+    </label>
+  </div>
+</section>
+
+<!-- APPLICATIONS (section spéciale) -->
+<section class="os-window" id="win-apps" role="dialog" aria-labelledby="t-apps" data-w="980" data-h="660" data-x="140" data-y="60" hidden>
+  <header class="win-head">
+    <div class="win-title" id="t-apps"><svg class="ic"><use href="#i-apps"/></svg><span data-i18n="win.apps">Mes applications</span></div>
+    <div class="win-btns"></div>
+  </header>
+  <div class="win-body">
+    <p class="section-intro" data-i18n="apps.intro">Deux applications que j'ai conçues, développées et déployées seul. Elles tournent en production sur Vercel, avec une base PostgreSQL, une authentification et des politiques d'accès par utilisateur.</p>
+
+    <article class="app-feature">
+      <a class="app-shot" href="https://egyptian-arabic-app-phi.vercel.app" target="_blank" rel="noopener">
+        <img src="/assets/shots/egy-home.webp" width="1200" height="750" alt="Page d'accueil de l'application d'arabe égyptien" loading="lazy" decoding="async">
+      </a>
+      <div class="app-meta">
+        <span class="pill pill-live"><span class="dot"></span><span data-i18n="apps.live">En ligne</span></span>
+        <h2 class="h2">Arabe égyptien</h2>
+        <p class="app-tag" data-i18n="apps.egy.tag">Apprendre le dialecte cairote, pas l'arabe des manuels.</p>
+        <ul class="stat-row" role="list">
+          <li><b>30</b><span data-i18n="apps.egy.s1">modules</span></li>
+          <li><b>141</b><span data-i18n="apps.egy.s2">leçons</span></li>
+          <li><b>554</b><span data-i18n="apps.egy.s3">mots</span></li>
+          <li><b>A1→B2</b><span data-i18n="apps.egy.s4">niveaux</span></li>
+        </ul>
+        <div class="tags"><span>Next.js 16</span><span>React 19</span><span>TypeScript</span><span>Tailwind 4</span><span>Supabase</span><span>PostgreSQL</span></div>
+        <div class="row-actions">
+          <button class="btn btn-primary" data-open="win-p-arabe"><span data-i18n="apps.case">Lire l'étude de cas</span></button>
+          <a class="btn" href="https://egyptian-arabic-app-phi.vercel.app" target="_blank" rel="noopener"><svg class="ic"><use href="#i-external"/></svg><span data-i18n="apps.visit">Ouvrir le site</span></a>
+        </div>
+      </div>
+    </article>
+
+    <article class="app-feature">
+      <a class="app-shot app-shot-private" href="https://muscu-tau.vercel.app" target="_blank" rel="noopener">
+        <img src="/assets/shots/muscu-login.webp" width="1200" height="750" alt="Écran de connexion de l'application Muscu" loading="lazy" decoding="async">
+      </a>
+      <div class="app-meta">
+        <span class="pill pill-private"><svg class="ic"><use href="#i-lock"/></svg><span data-i18n="apps.private">Application privée</span></span>
+        <h2 class="h2">Muscu</h2>
+        <p class="app-tag" data-i18n="apps.mus.tag">Mon carnet d'entraînement, exactement mon programme et rien d'autre.</p>
+        <ul class="stat-row" role="list">
+          <li><b>4</b><span data-i18n="apps.mus.s1">séances</span></li>
+          <li><b>22</b><span data-i18n="apps.mus.s2">exercices</span></li>
+          <li><b>1</b><span data-i18n="apps.mus.s3">utilisateur</span></li>
+          <li><b>∞</b><span data-i18n="apps.mus.s4">courbes</span></li>
+        </ul>
+        <div class="tags"><span>Next.js 16</span><span>React 19</span><span>TypeScript</span><span>Tailwind 4</span><span>Supabase</span><span>Recharts</span></div>
+        <div class="row-actions">
+          <button class="btn btn-primary" data-open="win-p-muscu"><span data-i18n="apps.case">Lire l'étude de cas</span></button>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- ÉTUDE DE CAS — ARABE ÉGYPTIEN -->
+<section class="os-window" id="win-p-arabe" role="dialog" aria-labelledby="t-arabe" data-w="880" data-h="640" data-x="200" data-y="70" hidden>
+  <header class="win-head">
+    <div class="win-title" id="t-arabe"><svg class="ic"><use href="#i-apps"/></svg> Arabe égyptien</div>
+    <div class="win-btns"></div>
+  </header>
+  <div class="win-body case">
+    <img class="case-hero" src="/assets/shots/egy-home.webp" width="1200" height="750" alt="Accueil de l'application : « Parler l'arabe du Caire, pas celui des manuels »" loading="lazy" decoding="async">
+
+    <dl class="case-meta">
+      <div><dt data-i18n="case.year">Année</dt><dd>2026</dd></div>
+      <div><dt data-i18n="case.role">Rôle</dt><dd data-i18n="arabe.role">Conception, développement, contenu</dd></div>
+      <div><dt data-i18n="case.type">Type</dt><dd data-i18n="case.perso">Projet personnel</dd></div>
+      <div><dt data-i18n="case.state">État</dt><dd data-i18n="case.prod">En production</dd></div>
+    </dl>
+
+    <h3 class="h3" data-i18n="case.problem">Le problème</h3>
+    <p data-i18n="arabe.problem">Les manuels enseignent l'arabe littéraire — une langue que personne ne parle dans la rue. Quelqu'un qui débarque au Caire avec trois ans de cours ne comprend pas son chauffeur de taxi. Il n'existait pas de parcours structuré, en français, pour apprendre le dialecte cairote depuis zéro.</p>
+
+    <h3 class="h3" data-i18n="case.built">Ce que j'ai construit</h3>
+    <ul class="ul">
+      <li data-i18n="arabe.b1"><b>Un parcours linéaire</b> de 30 modules répartis sur les niveaux A1 à B2, où chaque leçon débloque la suivante.</li>
+      <li data-i18n="arabe.b2"><b>Un quiz par module</b> qui exige 70 % de réussite <em>et</em> la lecture de toutes les leçons — cocher ne suffit pas.</li>
+      <li data-i18n="arabe.b3"><b>Une leçon du jour</b> qui retire au hasard des mots parmi ceux déjà vus, et ne demande jamais ce qui n'a pas été appris.</li>
+      <li data-i18n="arabe.b4"><b>Un test de placement</b>, un glossaire global de 554 mots et une page dédiée à l'Arabizi avec les quatre sons arabes écoutables.</li>
+      <li data-i18n="arabe.b5"><b>Une progression liée au compte</b> — mais le contenu reste consultable sans inscription.</li>
+    </ul>
+
+    <h3 class="h3" data-i18n="case.tech">Le point technique</h3>
+    <p data-i18n="arabe.tech">Tout le contenu pédagogique venait de 15 fichiers JSON rédigés en amont, aux structures irrégulières : un fichier de conjugaisons ne suit pas du tout le schéma « module → jours → leçons » des autres. Le schéma PostgreSQL ayant été écrit avant que la forme exacte des données soit connue, j'ai préféré écrire un script d'import qui <em>documente</em> chaque correspondance non triviale plutôt que de tordre les données pour les faire entrer dans les tables. Le README du projet contient la table de correspondances complète.</p>
+
+    <h3 class="h3" data-i18n="case.decisions">Décisions assumées</h3>
+    <p data-i18n="arabe.dec">Toutes les tables sont protégées par des politiques d'accès par ligne (RLS), et aucune clé capable de les contourner n'est déployée en production. La conséquence est acceptée : quelques opérations d'administration restent manuelles plutôt que d'exposer une clé privilégiée sur un serveur public.</p>
+
+    <div class="shot-grid">
+      <figure><img src="/assets/shots/egy-modules.webp" width="1200" height="750" alt="Liste des modules classés par niveau" loading="lazy" decoding="async"><figcaption data-i18n="arabe.f1">Les 30 modules, groupés par niveau</figcaption></figure>
+      <figure><img src="/assets/shots/egy-glossaire.webp" width="1200" height="750" alt="Glossaire de l'application" loading="lazy" decoding="async"><figcaption data-i18n="arabe.f2">Le glossaire, recherchable</figcaption></figure>
+    </div>
+
+    <div class="row-actions">
+      <a class="btn btn-primary" href="https://egyptian-arabic-app-phi.vercel.app" target="_blank" rel="noopener"><svg class="ic"><use href="#i-external"/></svg><span data-i18n="apps.visit">Ouvrir le site</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ÉTUDE DE CAS — MUSCU -->
+<section class="os-window" id="win-p-muscu" role="dialog" aria-labelledby="t-muscu" data-w="860" data-h="620" data-x="230" data-y="90" hidden>
+  <header class="win-head">
+    <div class="win-title" id="t-muscu"><svg class="ic"><use href="#i-apps"/></svg> Muscu</div>
+    <div class="win-btns"></div>
+  </header>
+  <div class="win-body case">
+    <img class="case-hero" src="/assets/shots/muscu-login.webp" width="1200" height="750" alt="Écran de connexion de Muscu" loading="lazy" decoding="async">
+
+    <dl class="case-meta">
+      <div><dt data-i18n="case.year">Année</dt><dd>2026</dd></div>
+      <div><dt data-i18n="case.role">Rôle</dt><dd data-i18n="muscu.role">Conception et développement</dd></div>
+      <div><dt data-i18n="case.type">Type</dt><dd data-i18n="case.perso">Projet personnel</dd></div>
+      <div><dt data-i18n="case.state">État</dt><dd data-i18n="muscu.state">En production, usage quotidien</dd></div>
+    </dl>
+
+    <h3 class="h3" data-i18n="case.problem">Le problème</h3>
+    <p data-i18n="muscu.problem">Les applications de musculation du marché sont des usines à gaz : abonnement, programmes génériques, publicités, fonctionnalités dont je ne me sers jamais. Je voulais un carnet qui contienne exactement mon programme et rien d'autre, utilisable entre deux séries sans réfléchir.</p>
+
+    <h3 class="h3" data-i18n="case.built">Ce que j'ai construit</h3>
+    <ul class="ul">
+      <li data-i18n="muscu.b1"><b>Mon programme sur 4 séances</b> (Haut A, Bas A, Bas B, Haut B) et 22 exercices, stocké en base de données et non codé en dur : le modifier ne demande aucun redéploiement.</li>
+      <li data-i18n="muscu.b2"><b>Validation série par série</b>, avec le poids et le nombre de répétitions saisis au fur et à mesure.</li>
+      <li data-i18n="muscu.b3"><b>Un minuteur de repos</b> qui démarre tout seul dès qu'une série est validée.</li>
+      <li data-i18n="muscu.b4"><b>Une photo de démonstration</b> par exercice, pour lever le doute sur l'exécution.</li>
+      <li data-i18n="muscu.b5"><b>Une page progression</b> listant la charge actuelle de chaque exercice et sa courbe dans le temps.</li>
+    </ul>
+
+    <h3 class="h3" data-i18n="case.tech">Le point technique</h3>
+    <p data-i18n="muscu.tech">C'est une application volontairement mono-utilisateur : les inscriptions publiques sont désactivées, le compte unique a été créé à la main, et les politiques RLS filtrent chaque ligne par utilisateur. Ce n'est pas une limite, c'est la spécification — ça supprime tout un pan de complexité (gestion des rôles, partage, invitations) pour un besoin qui n'existe pas.</p>
+
+    <h3 class="h3" data-i18n="case.note">À noter</h3>
+    <p data-i18n="muscu.note">L'application étant privée, il n'y a pas de démonstration publique : le lien mène à l'écran de connexion. Je peux en faire la démonstration en entretien, ou détailler le code sur demande.</p>
+  </div>
+</section>
+
+<!-- EXPLORATEUR DE PROJETS -->
+<section class="os-window win-explorer" id="win-projects" role="dialog" aria-labelledby="t-proj" data-w="1000" data-h="640" data-x="160" data-y="60" hidden>
+  <header class="win-head">
+    <div class="win-title" id="t-proj"><svg class="ic"><use href="#i-folder"/></svg><span data-i18n="win.projects">Projets</span></div>
+    <div class="win-btns"></div>
+  </header>
+  <div class="explorer-bar">
+    <div class="crumb"><svg class="ic"><use href="#i-folder"/></svg> <span data-i18n="exp.root">Ce PC</span> <i>›</i> <span id="crumb-cat" data-i18n="exp.all">Tous les projets</span></div>
+    <div class="explorer-tools">
+      <label class="search"><svg class="ic"><use href="#i-search"/></svg><input type="search" id="proj-search" placeholder="Rechercher" data-i18n-ph="exp.search" aria-label="Rechercher un projet"></label>
+      <div class="viewtoggle" role="group" aria-label="Affichage">
+        <button class="vt is-on" data-view="grid" aria-pressed="true" title="Grille"><svg class="ic"><use href="#i-grid"/></svg></button>
+        <button class="vt" data-view="list" aria-pressed="false" title="Liste"><svg class="ic"><use href="#i-list"/></svg></button>
+      </div>
+    </div>
+  </div>
+  <div class="win-body explorer-body">
+    <nav class="explorer-side" aria-label="Catégories">
+      <button class="cat is-on" data-cat="all"><svg class="ic"><use href="#i-home"/></svg><span data-i18n="exp.all">Tous les projets</span><i class="count"></i></button>
+      <button class="cat" data-cat="app"><svg class="ic"><use href="#i-apps"/></svg><span data-i18n="exp.c1">Applications web</span><i class="count"></i></button>
+      <button class="cat" data-cat="dev"><svg class="ic"><use href="#i-terminal"/></svg><span data-i18n="exp.c2">Développement</span><i class="count"></i></button>
+      <button class="cat" data-cat="design"><svg class="ic"><use href="#i-grid"/></svg><span data-i18n="exp.c3">Design graphique</span><i class="count"></i></button>
+      <button class="cat" data-cat="ux"><svg class="ic"><use href="#i-user"/></svg><span data-i18n="exp.c4">UX &amp; recherche</span><i class="count"></i></button>
+      <button class="cat" data-cat="game"><svg class="ic"><use href="#i-play"/></svg><span data-i18n="exp.c5">Game design</span><i class="count"></i></button>
+    </nav>
+    <div class="explorer-main">
+      <div id="proj-list" class="proj-grid"></div>
+      <p id="proj-empty" class="empty" hidden data-i18n="exp.empty">Aucun projet ne correspond à cette recherche.</p>
+    </div>
+  </div>
+  <footer class="explorer-status"><span id="proj-count"></span></footer>
+</section>
+
+<!-- CONTACT -->
+<section class="os-window" id="win-contact" role="dialog" aria-labelledby="t-contact" data-w="640" data-h="580" data-x="280" data-y="120" hidden>
+  <header class="win-head">
+    <div class="win-title" id="t-contact"><svg class="ic"><use href="#i-mail"/></svg><span data-i18n="win.contact">Nouveau message</span></div>
+    <div class="win-btns"></div>
+  </header>
+  <div class="win-body">
+    <p class="section-intro" data-i18n="contact.intro">Écrivez-moi ici : le bouton ouvre votre logiciel de messagerie avec le message pré-rempli. Aucune donnée ne transite par ce site.</p>
+    <form id="mail-form" class="mail">
+      <div class="field"><label for="m-to" data-i18n="contact.to">À</label><input id="m-to" value="pouteaue78@gmail.com" readonly></div>
+      <div class="field"><label for="m-name" data-i18n="contact.name">Votre nom</label><input id="m-name" autocomplete="name" required></div>
+      <div class="field"><label for="m-subject" data-i18n="contact.subject">Objet</label><input id="m-subject" required></div>
+      <div class="field"><label for="m-body" data-i18n="contact.body">Message</label><textarea id="m-body" rows="6" required></textarea></div>
+      <div class="row-actions">
+        <button class="btn btn-primary" type="submit"><svg class="ic"><use href="#i-mail"/></svg><span data-i18n="contact.send">Ouvrir dans ma messagerie</span></button>
+        <button class="btn" type="button" id="m-copy" data-i18n="contact.copy">Copier l'adresse</button>
+      </div>
+    </form>
+    <h3 class="h3" data-i18n="contact.else">Ailleurs</h3>
+    <div class="links">
+      <a class="link-card" href="https://www.linkedin.com/in/evan-pouteau-06a9a7342" target="_blank" rel="noopener">
+        <svg class="ic"><use href="#i-linkedin"/></svg>
+        <span><b>LinkedIn</b><i data-i18n="contact.li">Parcours, expériences et réseau</i></span>
+        <svg class="ic ic-end"><use href="#i-external"/></svg>
+      </a>
+      <a class="link-card" href="mailto:pouteaue78@gmail.com">
+        <svg class="ic"><use href="#i-mail"/></svg>
+        <span><b>pouteaue78@gmail.com</b><i data-i18n="contact.mail">Réponse sous 48 h en général</i></span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- MENTIONS LÉGALES -->
+<section class="os-window" id="win-legal" role="dialog" aria-labelledby="t-legal" data-w="760" data-h="600" data-x="240" data-y="90" hidden>
+  <header class="win-head">
+    <div class="win-title" id="t-legal"><svg class="ic"><use href="#i-scale"/></svg><span data-i18n="win.legal">Mentions légales</span></div>
+    <div class="win-btns"></div>
+  </header>
+  <div class="tabbar" role="tablist" aria-label="Sections légales">
+    <button role="tab" class="tab is-on" aria-selected="true" data-tab="legal" data-i18n="legal.t1">Mentions légales</button>
+    <button role="tab" class="tab" aria-selected="false" data-tab="privacy" data-i18n="legal.t2">Confidentialité</button>
+    <button role="tab" class="tab" aria-selected="false" data-tab="credits" data-i18n="legal.t3">Crédits</button>
+  </div>
+  <div class="win-body legal">
+    <div class="tabpane is-on" data-pane="legal">
+      <h3 class="h3" data-i18n="legal.ed">Éditeur du site</h3>
+      <p data-i18n="legal.ed.p">Ce site est édité à titre personnel et non commercial par <b>Evan Pouteau</b>, étudiant, joignable à l'adresse <a href="mailto:pouteaue78@gmail.com">pouteaue78@gmail.com</a>. Directeur de la publication : Evan Pouteau.</p>
+      <p class="note" data-i18n="legal.ed.note">Conformément à l'article 6 III-2 de la loi n° 2004-575 du 21 juin 2004 pour la confiance dans l'économie numérique, l'éditeur, personne physique éditant à titre non professionnel, ne publie pas son adresse postale : celle-ci est détenue par l'hébergeur, qui peut la communiquer à l'autorité judiciaire.</p>
+
+      <h3 class="h3" data-i18n="legal.host">Hébergeur</h3>
+      <p data-i18n="legal.host.p"><b>Vercel Inc.</b> — 440 N Barranca Ave #4133, Covina, CA 91723, États-Unis. Site : <a href="https://vercel.com" target="_blank" rel="noopener">vercel.com</a>.</p>
+
+      <h3 class="h3" data-i18n="legal.ip">Propriété intellectuelle</h3>
+      <p data-i18n="legal.ip.p">Le code, les textes et les visuels de ce site sont l'œuvre d'Evan Pouteau, sauf mention contraire dans l'onglet Crédits. Les projets réalisés dans le cadre universitaire sont présentés à titre pédagogique ; les travaux d'équipe sont signalés comme tels. Toute reproduction sans autorisation est interdite.</p>
+
+      <h3 class="h3" data-i18n="legal.liab">Responsabilité</h3>
+      <p data-i18n="legal.liab.p">Les liens sortants pointent vers des sites dont je ne maîtrise pas le contenu et dont je ne saurais être tenu responsable. Je m'efforce de maintenir les informations à jour, sans garantie d'exhaustivité.</p>
+    </div>
+
+    <div class="tabpane" data-pane="privacy" hidden>
+      <h3 class="h3" data-i18n="priv.h1">Aucune donnée collectée</h3>
+      <p data-i18n="priv.p1">Ce site est entièrement statique. Il ne dépose <b>aucun cookie</b>, n'utilise <b>aucun outil de mesure d'audience</b> et ne comporte <b>aucun formulaire transmettant des données à un serveur</b>. Le formulaire de contact se contente d'ouvrir votre propre logiciel de messagerie avec un message pré-rempli : rien n'est envoyé ni enregistré par ce site.</p>
+
+      <h3 class="h3" data-i18n="priv.h2">Stockage local</h3>
+      <p data-i18n="priv.p2">Vos préférences d'affichage (thème clair ou sombre, langue, sons, couleur d'accent) sont enregistrées dans le <code>localStorage</code> de votre navigateur. Ces informations ne quittent jamais votre appareil et ne me sont pas transmises. Vider les données du site les efface.</p>
+
+      <h3 class="h3" data-i18n="priv.h3">Services tiers</h3>
+      <p data-i18n="priv.p3">Les polices de caractères sont chargées depuis Google Fonts, ce qui transmet votre adresse IP à Google le temps du téléchargement. L'hébergement est assuré par Vercel, qui conserve des journaux techniques de connexion. Aucun autre service tiers n'est sollicité.</p>
+
+      <h3 class="h3" data-i18n="priv.h4">Vos droits</h3>
+      <p data-i18n="priv.p4">Aucune donnée personnelle n'étant collectée, il n'y a pas de traitement à consulter, rectifier ou supprimer. Pour toute question, écrivez à <a href="mailto:pouteaue78@gmail.com">pouteaue78@gmail.com</a>.</p>
+    </div>
+
+    <div class="tabpane" data-pane="credits" hidden>
+      <h3 class="h3" data-i18n="cred.h1">Conception et développement</h3>
+      <p data-i18n="cred.p1">Interface, code et contenus : Evan Pouteau. Site statique en HTML, CSS et JavaScript, sans framework ni dépendance de build.</p>
+      <h3 class="h3" data-i18n="cred.h2">Ressources tierces</h3>
+      <ul class="ul">
+        <li data-i18n="cred.l1">Polices <b>Inter</b> (SIL Open Font License) et <b>Cascadia Code</b> (SIL OFL), servies par Google Fonts.</li>
+        <li data-i18n="cred.l2">Le fond animé est un shader WebGL écrit à la main, sans bibliothèque 3D.</li>
+        <li data-i18n="cred.l3">Le projet « Expérience gestuelle » utilise <b>MediaPipe</b> (Google, licence Apache 2.0) pour le suivi de la main.</li>
+        <li data-i18n="cred.l4">Icônes dessinées pour ce site, inspirées du langage visuel Fluent de Microsoft. Ce portfolio n'est ni affilié à Microsoft ni approuvé par elle ; la métaphore du bureau est un hommage.</li>
+      </ul>
+      <h3 class="h3" data-i18n="cred.h3">Accessibilité</h3>
+      <p data-i18n="cred.p3">Navigation clavier complète, indicateurs de focus visibles, rôles ARIA sur les fenêtres et respect de <code>prefers-reduced-motion</code>. Un défaut d'accessibilité repéré ? Écrivez-moi, je corrige.</p>
+    </div>
+  </div>
+</section>
+
+<!-- VISIONNEUSE -->
+<section class="os-window win-viewer" id="win-viewer" role="dialog" aria-labelledby="t-viewer" data-w="900" data-h="660" data-x="200" data-y="60" hidden>
+  <header class="win-head">
+    <div class="win-title" id="t-viewer"><svg class="ic"><use href="#i-folder"/></svg><span id="viewer-name">Document</span></div>
+    <div class="win-btns"></div>
+  </header>
+  <div class="win-body viewer-body" id="viewer-body"></div>
+</section>
+
+<!-- ============ MENU DÉMARRER ============ -->
+<div id="start-menu" class="panel start-menu" role="dialog" aria-label="Menu Démarrer" hidden>
+  <label class="search search-lg"><svg class="ic"><use href="#i-search"/></svg><input type="search" id="start-search" placeholder="Rechercher une application" data-i18n-ph="start.search" aria-label="Rechercher"></label>
+  <p class="panel-label" data-i18n="start.pinned">Épinglé</p>
+  <div class="start-grid" id="start-grid">
+    <button class="start-app" data-open="win-about"><svg class="ic"><use href="#i-user"/></svg><span>Ce PC</span></button>
+    <button class="start-app" data-open="win-apps"><svg class="ic"><use href="#i-apps"/></svg><span data-i18n="icon.apps">Mes applications</span></button>
+    <button class="start-app" data-open="win-projects"><svg class="ic"><use href="#i-folder"/></svg><span data-i18n="icon.projects">Projets</span></button>
+    <button class="start-app" data-open="win-terminal"><svg class="ic"><use href="#i-terminal"/></svg><span>Terminal</span></button>
+    <button class="start-app" data-open="win-contact"><svg class="ic"><use href="#i-mail"/></svg><span>Contact</span></button>
+    <button class="start-app" data-open="win-legal"><svg class="ic"><use href="#i-scale"/></svg><span data-i18n="win.legal">Mentions légales</span></button>
+  </div>
+  <div class="start-foot">
+    <div class="start-user"><img src="/assets/images/profil.webp" width="32" height="32" alt=""><span>Evan Pouteau</span></div>
+    <div class="start-foot-btns">
+      <a class="iconbtn" href="/assets/docs/CV-Evan-Pouteau.pdf" download title="Télécharger le CV" aria-label="Télécharger le CV"><svg class="ic"><use href="#i-download"/></svg></a>
+      <button class="iconbtn" id="btn-shutdown" title="Arrêter" aria-label="Arrêter"><svg class="ic" viewBox="0 0 24 24"><path d="M12 3v9"/><path d="M6.5 6.5a8 8 0 1 0 11 0"/></svg></button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ PARAMÈTRES RAPIDES ============ -->
+<div id="quick" class="panel quick" role="dialog" aria-label="Paramètres rapides" hidden>
+  <div class="quick-row">
+    <button class="quick-tile" id="q-theme" aria-pressed="false"><svg class="ic"><use href="#i-moon"/></svg><span data-i18n="q.theme">Thème sombre</span></button>
+    <button class="quick-tile" id="q-sound" aria-pressed="false"><svg class="ic"><use href="#i-mute"/></svg><span data-i18n="q.sound">Sons</span></button>
+    <button class="quick-tile" id="q-lang"><svg class="ic"><use href="#i-globe"/></svg><span id="q-lang-label">English</span></button>
+    <button class="quick-tile" id="q-reset"><svg class="ic"><use href="#i-chip"/></svg><span data-i18n="q.reset">Réinitialiser</span></button>
+  </div>
+  <p class="panel-label" data-i18n="q.accent">Couleur d'accentuation</p>
+  <div class="swatches" id="swatches" role="group" aria-label="Couleur d'accentuation"></div>
+</div>
+
+<!-- ============ BARRE DES TÂCHES ============ -->
+<footer class="taskbar">
+  <div class="tb-center">
+    <button class="tb-start" id="btn-start" aria-label="Menu Démarrer" aria-expanded="false">
+      <span class="winlogo"><i></i><i></i><i></i><i></i></span>
+    </button>
+    <div class="tb-tasks" id="tb-tasks" role="group" aria-label="Fenêtres ouvertes"></div>
+  </div>
+  <div class="tb-right">
+    <button class="tb-tray" id="btn-quick" aria-label="Paramètres rapides" aria-expanded="false">
+      <svg class="ic"><use href="#i-wifi"/></svg>
+      <svg class="ic" id="tray-sound"><use href="#i-mute"/></svg>
+      <svg class="ic"><use href="#i-settings"/></svg>
+    </button>
+    <button class="tb-clock" id="btn-clock" aria-label="Date et heure">
+      <span id="tb-time">00:00</span>
+      <span id="tb-date">--/--/----</span>
+    </button>
+  </div>
+</footer>
+
+<!-- Barre d'accueil mobile -->
+<div class="home-bar" aria-hidden="true"><button id="btn-home" aria-label="Accueil"></button></div>
+
+<div id="snap-hint" class="snap-hint" aria-hidden="true"></div>
+<div id="toasts" class="toasts" role="region" aria-label="Notifications" aria-live="polite"></div>
+<div id="shutdown" class="shutdown" hidden><div class="spinner" aria-hidden="true"></div><p data-i18n="shut.msg">Arrêt en cours…</p></div>
+
+<noscript>
+  <div class="noscript">
+    <h2>Evan Pouteau — développeur web, étudiant en BUT MMI</h2>
+    <p>Ce portfolio a besoin de JavaScript pour son interface de bureau. Voici l'essentiel : je développe des applications web avec Next.js, React, TypeScript et Supabase. Deux d'entre elles sont en production —
+      <a href="https://egyptian-arabic-app-phi.vercel.app">une application d'apprentissage de l'arabe égyptien</a> (30 modules, 141 leçons) et un carnet d'entraînement privé.
+      Contact : <a href="mailto:pouteaue78@gmail.com">pouteaue78@gmail.com</a> ·
+      <a href="https://www.linkedin.com/in/evan-pouteau-06a9a7342">LinkedIn</a>.</p>
+  </div>
+</noscript>
+
+</body>
+</html>

@@ -207,6 +207,9 @@ a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset:
 @keyframes winOut { to { opacity: 0; transform: scale(.95) } }
 @keyframes winMin { to { opacity: 0; transform: scale(.7) translateY(24vh) } }
 .os-window.is-focus { border-color: color-mix(in srgb, var(--accent) 45%, var(--border-2)); }
+/* La fenêtre reçoit le focus par script à l'ouverture ; l'anneau ferait doublon
+   avec la bordure d'accentuation ci-dessus, qui joue déjà ce rôle. */
+.os-window:focus, .os-window:focus-visible { outline: none; }
 .os-window.is-max { inset: 0 0 var(--tb) 0 !important; width: auto !important; height: auto !important; border-radius: 0; border-width: 0 0 1px 0; }
 .os-window.is-drag { transition: none; user-select: none; }
 

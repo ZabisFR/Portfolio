@@ -38,12 +38,10 @@ tools/              Serveur local et génération du CV (non déployés)
 **Ajouter un projet** — un objet à copier dans `js/data.js`. L'explorateur, la
 recherche, le menu Démarrer et le terminal se mettent à jour tout seuls.
 
-**Mettre à jour le CV** — éditer `tools/cv.html`, puis :
-
-```bash
-npx playwright install chromium   # une seule fois
-node tools/build-cv.mjs
-```
+**Mettre à jour le CV** — le PDF en ligne (`assets/docs/CV-Evan-Pouteau.pdf`) est
+fait à la main : il suffit de remplacer le fichier. `tools/cv.html` n'est qu'un
+modèle de secours ; le script de génération refuse d'écraser un CV existant sans
+`--force`.
 
 **Traduire un nouveau texte** — ajouter `data-i18n="ma.cle"` sur le nœud français
 dans `index.html`, puis la clé correspondante dans `js/i18n.js`.
@@ -63,8 +61,6 @@ exclut `tools/` et `.claude/`.
 
 ## À compléter
 
-- `tools/cv.html` contient trois champs surlignés en jaune : ville, nom de l'IUT,
-  baccalauréat.
 - `js/data.js` : les quatre projets universitaires reprennent les descriptions de
   l'ancien portfolio. Ils méritent d'être enrichis (contexte, rôle exact,
   captures).

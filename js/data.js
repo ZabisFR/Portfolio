@@ -85,7 +85,7 @@ export const PROJECTS = [
       ],
       note: 'L’expérience demande l’accès à la webcam. Rien n’est enregistré ni envoyé : tout le traitement se fait dans le navigateur.',
       note_en: 'The experiment needs webcam access. Nothing is recorded or sent: everything runs in the browser.',
-      links: [['Lancer l’expérience', 'Launch the experiment', '/gestural-lab/index.html']]
+      links: [['Lancer l’expérience', 'Launch the experiment', '/gestural-lab/']]
     }
   },
   {

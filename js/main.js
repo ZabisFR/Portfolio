@@ -65,6 +65,11 @@ function applyLang() {
     if (!origin.has(el)) origin.set(el, el.placeholder);
     el.placeholder = lang === 'en' ? (EN[k] ?? origin.get(el)) : origin.get(el);
   });
+  document.querySelectorAll('[data-i18n-al]').forEach((el) => {
+    const k = el.dataset.i18nAl;
+    if (!origin.has(el)) origin.set(el, el.getAttribute('aria-label'));
+    el.setAttribute('aria-label', lang === 'en' ? (EN[k] ?? origin.get(el)) : origin.get(el));
+  });
   const ll = document.getElementById('q-lang-label');
   if (ll) ll.textContent = t('js.lang');
   document.querySelectorAll('.win-btn').forEach((b) => {

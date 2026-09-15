@@ -36,6 +36,8 @@ export const EN = {
   'apps.case': 'Read the case study',
   'apps.visit': 'Open the site',
   'apps.egy.tag': 'Learn the Cairo dialect, not textbook Arabic.',
+  'apps.egy.al': 'Open the Egyptian Arabic app (new tab)',
+  'apps.mus.al': 'Open Muscu — private app, sign-in screen (new tab)',
   'apps.egy.s1': 'modules', 'apps.egy.s2': 'lessons', 'apps.egy.s3': 'words', 'apps.egy.s4': 'levels',
   'apps.mus.tag': 'My training log — exactly my program and nothing else.',
   'apps.mus.s1': 'sessions', 'apps.mus.s2': 'exercises', 'apps.mus.s3': 'user', 'apps.mus.s4': 'charts',

@@ -68,8 +68,8 @@ export function initTerminal(app) {
           ? 'Second-year BUT MMI student, front-end web developer.'
           : '\u00c9tudiant en 2\u1d49 ann\u00e9e de BUT MMI, d\u00e9veloppeur web front-end.');
         write(isEn()
-          ? 'Two Next.js + Supabase apps in production. Looking for an apprenticeship from September 2027.'
-          : 'Deux applications Next.js + Supabase en production. En recherche d\u2019alternance pour septembre 2027.');
+          ? 'Two Next.js + Supabase apps in production. Seeking a web development internship, 12 April to 18 June 2027.'
+          : 'Deux applications Next.js + Supabase en production. Recherche un stage en d\u00e9veloppement web du 12 avril au 18 juin 2027.');
         blank();
         write(`<button class="t-a" data-open="win-about">${isEn() ? 'Open the full profile \u2192' : 'Ouvrir la fiche compl\u00e8te \u2192'}</button>`);
       }
@@ -122,11 +122,15 @@ export function initTerminal(app) {
     cv: {
       fr: 't\u00e9l\u00e9charger mon CV', en: 'download my CV',
       run() {
-        write(isEn() ? 'Downloading CV-Evan-Pouteau.pdf\u2026' : 'T\u00e9l\u00e9chargement de CV-Evan-Pouteau.pdf\u2026', 't-dim');
+        const file = isEn() ? 'CV-Evan-Pouteau-EN.pdf' : 'CV-Evan-Pouteau-FR.pdf';
+        write(`${isEn() ? 'Downloading' : 'T\u00e9l\u00e9chargement de'} ${file}\u2026`, 't-dim');
         const a = document.createElement('a');
-        a.href = '/assets/docs/CV-Evan-Pouteau.pdf';
+        a.href = `/assets/docs/${file}`;
         a.download = '';
         a.click();
+        write(`<span class="t-dim">${isEn()
+          ? 'The French version is available too \u2014 type <span class="t-key">lang</span> then <span class="t-key">cv</span>.'
+          : 'La version anglaise existe aussi \u2014 tapez <span class="t-key">lang</span> puis <span class="t-key">cv</span>.'}</span>`);
       }
     },
     contact: {

@@ -284,6 +284,23 @@ code { font-family: var(--mono); font-size: .88em; background: var(--surface-3);
 .spec dt { padding: 10px 16px; background: var(--surface-2); font-size: .82rem; font-weight: 600; white-space: nowrap; }
 .spec dd { padding: 10px 16px; background: var(--surface-2); font-size: .88rem; color: var(--muted); }
 
+
+/* Parcours : formation et expériences */
+.timeline { list-style: none; display: grid; gap: 2px; margin: 0; padding: 0; }
+.timeline li {
+  display: grid; grid-template-columns: 96px 1fr; gap: 16px; align-items: baseline;
+  padding: 11px 14px; border-radius: var(--r-sm);
+  transition: background .16s;
+}
+.timeline li:hover { background: var(--surface-2); }
+.timeline li + li { box-shadow: 0 -1px 0 var(--border); }
+.tl-when {
+  font-family: var(--mono); font-size: .74rem; color: var(--accent);
+  letter-spacing: .01em; white-space: nowrap; padding-top: 2px;
+}
+.timeline b { display: block; font-size: .92rem; font-weight: 600; line-height: 1.4; }
+.timeline i { display: block; font-style: normal; font-size: .82rem; color: var(--muted); margin-top: 3px; }
+
 .row-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px !important; }
 .btn {
   display: inline-flex; align-items: center; gap: 8px;

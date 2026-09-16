@@ -41,7 +41,7 @@ const t = (k, ...a) => {
 const FR = {
   'js.min': 'Réduire', 'js.max': 'Agrandir', 'js.restore': 'Restaurer', 'js.close': 'Fermer',
   'js.toast.title': 'Evan Pouteau',
-  'js.toast.body': 'En recherche d\u2019alternance pour septembre 2027. Deux applications en production \u2014 jetez-y un \u0153il.',
+  'js.toast.body': 'Recherche un stage en d\u00e9veloppement web pour le printemps 2027. Deux applications en production \u2014 jetez-y un \u0153il.',
   'js.toast.cta': 'Voir mes applications',
   'js.copied': 'Adresse copiée dans le presse-papiers.',
   'js.copied.t': 'Presse-papiers',
@@ -70,6 +70,20 @@ function applyLang() {
     if (!origin.has(el)) origin.set(el, el.getAttribute('aria-label'));
     el.setAttribute('aria-label', lang === 'en' ? (EN[k] ?? origin.get(el)) : origin.get(el));
   });
+  /* Le CV suit la langue de l'interface : le bouton principal sert la version
+     correspondante, le second propose l'autre. */
+  const cvFR = '/assets/docs/CV-Evan-Pouteau-FR.pdf';
+  const cvEN = '/assets/docs/CV-Evan-Pouteau-EN.pdf';
+  const main = document.getElementById('cv-main');
+  const alt = document.getElementById('cv-alt');
+  const startCv = document.getElementById('cv-start');
+  if (main) main.href = lang === 'en' ? cvEN : cvFR;
+  if (startCv) startCv.href = lang === 'en' ? cvEN : cvFR;
+  if (alt) {
+    alt.href = lang === 'en' ? cvFR : cvEN;
+    alt.querySelector('span').textContent = lang === 'en' ? 'Version française' : 'Version anglaise';
+  }
+
   const ll = document.getElementById('q-lang-label');
   if (ll) ll.textContent = t('js.lang');
   document.querySelectorAll('.win-btn').forEach((b) => {

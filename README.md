@@ -38,9 +38,10 @@ tools/              Serveur local et génération du CV (non déployés)
 **Ajouter un projet** — un objet à copier dans `js/data.js`. L'explorateur, la
 recherche, le menu Démarrer et le terminal se mettent à jour tout seuls.
 
-**Mettre à jour le CV** — le PDF en ligne (`assets/docs/CV-Evan-Pouteau.pdf`) est
-fait à la main : il suffit de remplacer le fichier. `tools/cv.html` n'est qu'un
-modèle de secours ; le script de génération refuse d'écraser un CV existant sans
+**Mettre à jour le CV** — deux PDF faits à la main, servis selon la langue de
+l'interface : `assets/docs/CV-Evan-Pouteau-FR.pdf` et `-EN.pdf`. Il suffit de
+remplacer le fichier en gardant ce nom exact. `tools/cv.html` n'est qu'un modèle
+de secours ; le script de génération refuse d'écraser un CV existant sans
 `--force`.
 
 **Traduire un nouveau texte** — ajouter `data-i18n="ma.cle"` sur le nœud français

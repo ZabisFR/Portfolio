@@ -12,10 +12,11 @@ import { useEffect, useMemo, useRef } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { MeshReflectorMaterial, RoundedBox, Sparkles } from '@react-three/drei';
 import { StudioEnv } from './studio-env';
+import { Warmup, useWarmup } from './warmup';
 import * as THREE from 'three';
 import { PROJECTS } from '@/content/projects';
 import { roundedRect } from './materials';
-import { useCovers } from './use-covers';
+import { preloadCovers, useCovers } from './use-covers';
 
 const N = PROJECTS.length;
 const STEP = (Math.PI * 2) / N;
@@ -86,7 +87,7 @@ function Card({ index, texture, ring, onPick }: {
 }
 
 function Ring({ target, onTarget, onOpen }: Props) {
-  const covers = useCovers();
+  const covers = useCovers('3d');
   const ring = useRef(target);
   const drag = useRef<{ x: number; start: number; moved: boolean } | null>(null);
   /* Le clic qui suit un glisser ne doit ni ouvrir ni faire tourner. */
@@ -170,16 +171,22 @@ function Ring({ target, onTarget, onOpen }: Props) {
 }
 
 export default function CarouselScene(props: Props) {
+  const warm = useWarmup();
   return (
     <Canvas
+      frameloop={warm.live ? 'always' : 'never'}
+      style={{ opacity: warm.live ? 1 : 0, transition: 'opacity .5s ease' }}
       dpr={[1, 1.75]}
       camera={{ position: [0, 0.45, RADIUS + 3.1], fov: 40 }}
       gl={{ antialias: true }}
-      onCreated={({ gl }) => { gl.toneMapping = THREE.ACESFilmicToneMapping; }}
+      onCreated={({ gl }) => {
+        gl.debug.checkShaderErrors = process.env.NODE_ENV !== 'production';
+        gl.toneMapping = THREE.ACESFilmicToneMapping;
+      }}
     >
       <color attach="background" args={['#140e0b']} />
       <fog attach="fog" args={['#140e0b', RADIUS + 2.5, RADIUS * 2 + 4]} />
-      <StudioEnv panels={[
+      <StudioEnv {...warm.env} panels={[
         { color: '#ffffff', intensity: 1.2, position: [0, 3, 2], scale: [6, 2], target: [0, 0, 0] },
         { color: '#ffb98a', intensity: 0.6, position: [-4, 1, 1], scale: [2, 3], target: [0, 0, 0] },
       ]} />
@@ -204,6 +211,9 @@ export default function CarouselScene(props: Props) {
         />
       </mesh>
       <Sparkles count={60} scale={[RADIUS * 3, 3, RADIUS * 3]} size={1.6} speed={0.25} opacity={0.35} color="#ffd2a0" />
+      <Warmup {...warm.warmup} />
     </Canvas>
   );
 }
+
+preloadCovers('3d');

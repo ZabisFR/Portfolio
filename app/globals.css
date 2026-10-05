@@ -73,6 +73,9 @@ body {
   --surface-3: rgba(255, 255, 255, .1); --border: rgba(255, 255, 255, .14); --border-2: rgba(255, 255, 255, .24);
   --accent-ink: #04121c;
 }
+/* fond de la pièce pendant que la 3D se prépare (pas au retour depuis l'OS,
+   qui reste visible dessous jusqu'à ce que la pièce apparaisse) */
+.scene-wrap:not([data-phase="exiting"]) { background: #17100c; }
 .scene-wrap[data-hidden="true"] { visibility: hidden; pointer-events: none; }
 
 .scene-ui {

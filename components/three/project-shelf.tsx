@@ -11,7 +11,7 @@ import * as THREE from 'three';
 import type { Project } from '@/content/projects';
 import { walnut } from './materials';
 import { PhotoFrame, frameSize } from './photo-frame';
-import { useCovers } from './use-covers';
+import { preloadCovers, useCovers } from './use-covers';
 
 const SHELF_Y = 1.6;
 const SHELF_Z = -1.17;
@@ -90,7 +90,7 @@ export function ProjectShelf({
   hoverObj: MutableRefObject<THREE.Object3D | null>;
   disabled?: boolean;
 }) {
-  const covers = useCovers();
+  const covers = useCovers('shelf');
   const wood = useMemo(() => walnut(), []);
   const half = Math.ceil(projects.length / 2);
   const rows = [projects.slice(0, half), projects.slice(half)];
@@ -145,3 +145,5 @@ export function ProjectShelf({
     </group>
   );
 }
+
+preloadCovers('shelf');

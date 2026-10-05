@@ -9,6 +9,8 @@ import { RoundedBox, useTexture } from '@react-three/drei';
 import * as THREE from 'three';
 import { roundedRect } from './materials';
 
+const SCREEN_URL = '/assets/screen/os-desktop.webp';
+
 /** Position et taille de la dalle, partagées avec la caméra qui vise dedans. */
 export const SCREEN = {
   center: new THREE.Vector3(0, 1.235, -0.255),
@@ -27,7 +29,7 @@ export function Monitor({
   hovered?: boolean;
   onHover?: (h: boolean) => void;
 }) {
-  const screen = useTexture('/assets/screen/os-desktop.webp');
+  const screen = useTexture(SCREEN_URL);
   useMemo(() => {
     screen.colorSpace = THREE.SRGBColorSpace;
     screen.anisotropy = 8;
@@ -84,3 +86,7 @@ export function Monitor({
     </group>
   );
 }
+
+/* Préchargée dès l'import, avec les couvertures : sinon elle n'était
+   demandée qu'une fois celles-ci arrivées (chargement en cascade). */
+useTexture.preload(SCREEN_URL);

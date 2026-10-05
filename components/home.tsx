@@ -13,7 +13,8 @@ import type { SceneMode } from './three/desk-scene';
 import { OS } from './os/os';
 import { usePrefs } from './os/prefs';
 
-const DeskScene = dynamic(() => import('./three/desk-scene'), { ssr: false });
+const loadScene = () => import('./three/desk-scene');
+const DeskScene = dynamic(loadScene, { ssr: false });
 
 type Phase = 'scene' | 'entering' | 'os' | 'exiting';
 
@@ -39,8 +40,24 @@ function canUse3D() {
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) return false;
   try {
     const c = document.createElement('canvas');
-    return !!(c.getContext('webgl2') || c.getContext('webgl'));
+    const gl = c.getContext('webgl2') || c.getContext('webgl');
+    /* contexte de test rendu tout de suite : le navigateur en limite le nombre */
+    gl?.getExtension('WEBGL_lose_context')?.loseContext();
+    return !!gl;
   } catch { return false; }
+}
+
+const seenIntro = () => { try { return sessionStorage.getItem('evanos.entered') === '1'; } catch { return false; } };
+
+/* La scène pèse l'essentiel du JavaScript : son téléchargement part dès
+   l'évaluation de ce module, en parallèle de l'hydratation, au lieu
+   d'attendre le premier rendu. Seulement si elle va vraiment s'afficher. */
+if (typeof window !== 'undefined'
+  && !matchMedia('(prefers-reduced-motion: reduce)').matches
+  && !seenIntro()
+  && !new URLSearchParams(location.search).get('open')
+  && !legacyHash(location.hash)) {
+  loadScene();
 }
 
 export default function Home() {
@@ -59,8 +76,7 @@ export default function Home() {
     setInitialWindow(open);
     const ok = canUse3D();
     setReady3D(ok);
-    const seen = (() => { try { return sessionStorage.getItem('evanos.entered') === '1'; } catch { return false; } })();
-    setPhase(!ok || seen || open ? 'os' : 'scene');
+    setPhase(!ok || seenIntro() || open ? 'os' : 'scene');
   }, []);
 
   const enter = useCallback(() => setPhase((p) => (p === 'scene' ? 'entering' : p)), []);
@@ -106,7 +122,7 @@ export default function Home() {
       ) : null}
 
       {sceneMounted && (
-        <div className="scene-wrap">
+        <div className="scene-wrap" data-phase={phase}>
           <DeskScene
             mode={mode}
             accent={prefs.accent}

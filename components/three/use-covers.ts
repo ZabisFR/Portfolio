@@ -7,13 +7,18 @@ import { useTexture } from '@react-three/drei';
 import * as THREE from 'three';
 import { PROJECTS } from '@/content/projects';
 
-/* Version 1024 px réservée à la 3D : les cadres et le carrousel n'affichent
-   jamais les couvertures en pleine résolution, inutile de télécharger 1600 px. */
-const url3d = (cover?: string) => (cover ? cover.replace('/assets/covers/', '/assets/covers/3d/') : '/assets/og.png');
+/* Deux tailles réservées à la 3D, jamais la couverture 1600 px :
+   - `shelf` (512 px) : les cadres de l'étagère, qui occupent une centaine de
+     pixels à l'écran — quatre fois moins à télécharger et à envoyer au GPU ;
+   - `3d` (1024 px) : les cartes du carrousel, vues de près. */
+export type CoverSize = 'shelf' | '3d';
 
-export function useCovers(): Record<string, THREE.Texture> {
-  const urls = useMemo(() => PROJECTS.map((p) => url3d(p.cover)), []);
-  const textures = useTexture(urls) as THREE.Texture[];
+const urls = (size: CoverSize) =>
+  PROJECTS.map((p) => (p.cover ? p.cover.replace('/assets/covers/', `/assets/covers/${size}/`) : '/assets/og.png'));
+
+export function useCovers(size: CoverSize): Record<string, THREE.Texture> {
+  const list = useMemo(() => urls(size), [size]);
+  const textures = useTexture(list) as THREE.Texture[];
   return useMemo(() => {
     const out: Record<string, THREE.Texture> = {};
     textures.forEach((t, i) => {
@@ -25,5 +30,8 @@ export function useCovers(): Record<string, THREE.Texture> {
   }, [textures]);
 }
 
-/* Précharge les images dès l'import du module, avant même le montage. */
-PROJECTS.forEach((p) => { if (p.cover) useTexture.preload(url3d(p.cover)); });
+/** À appeler au chargement du module de la scène : les images partent
+ *  avant même le montage. */
+export function preloadCovers(size: CoverSize) {
+  urls(size).forEach((u) => useTexture.preload(u));
+}

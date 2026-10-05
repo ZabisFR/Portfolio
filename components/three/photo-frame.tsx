@@ -48,7 +48,7 @@ export function PhotoFrame({
       {glass && (
         <mesh position={[0, 0, 0.0122]}>
           <planeGeometry args={[width + border * 2, h + border * 2]} />
-          <meshPhysicalMaterial transparent opacity={0.08} roughness={0.05} metalness={0} clearcoat={1} envMapIntensity={1.4} depthWrite={false} />
+          <meshStandardMaterial transparent opacity={0.08} roughness={0.05} metalness={0} envMapIntensity={1.4} depthWrite={false} />
         </mesh>
       )}
     </group>

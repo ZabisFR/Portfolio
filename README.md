@@ -82,9 +82,21 @@ framework Next.js (le projet Vercel a été créé à l'époque du site statique
   `components/three/projected-labels.tsx`.
 - **Pas d'`<Environment>` de drei** : il embarque des chargeurs HDR inutiles.
   L'éclairage d'environnement est construit par `components/three/studio-env.tsx`.
-- **Ombres figées** (`StaticShadows` dans `desk-scene.tsx`) : calculées la
-  première seconde puis gelées. Les recalculer à chaque image faisait tomber
-  la scène de 60 à 30 images/seconde sur une carte graphique intégrée.
+- **Shaders compilés avant la première image** (`components/three/warmup.tsx`) :
+  le `<Canvas>` reste en `frameloop="never"` pendant que `compileAsync` compile
+  tout en parallèle, puis la pièce apparaît en fondu. Sans cela, la première
+  image gelait la page 3 à 5 s. Pour garder ce gain :
+  - toute nouvelle scène 3D passe par `useWarmup()` + `<Warmup>` ;
+  - pas de `meshPhysicalMaterial` (vernis, verre) : deux fois plus long à
+    compiler que `meshStandardMaterial`, pour une différence invisible ici ;
+  - chaque combinaison de réglages d'un matériau (carte, rugosité, instances…)
+    est un shader de plus : réutiliser les mêmes réglages quand c'est possible ;
+  - mesurer avec un navigateur neuf (cache de shaders vide) : c'est ce que vit
+    un visiteur qui découvre le site.
+- **Ombres figées** (`StaticShadows` dans `desk-scene.tsx`) : calculées sur
+  les trois premières images puis gelées. Les recalculer à chaque image
+  faisait tomber la scène de 60 à 30 images/seconde sur une carte graphique
+  intégrée.
 - **Polices secondaires non préchargées** (`app/layout.tsx`) : la manuscrite et
   la chasse fixe ne se téléchargent que si un texte les utilise.
 - **Fenêtres opaques en mode relief** : Chrome n'applique pas `backdrop-filter`
@@ -94,12 +106,17 @@ framework Next.js (le projet Vercel a été créé à l'époque du site statique
 
 | Parcours | Transféré |
 |---|---|
-| Accueil avec scène 3D | ≈ 885 Ko |
+| Accueil avec scène 3D | ≈ 725 Ko |
 | OS + galerie 3D | ≈ 885 Ko |
 | OS sans 3D | ≈ 380 Ko |
 | Page projet | ≈ 325 Ko |
 
-Fluidité mesurée sur une carte graphique Intel intégrée : 60 images/seconde.
+Fluidité mesurée sur une carte graphique Intel intégrée : 60 images/seconde
+(30 sur batterie, Windows bridant alors la carte graphique).
+
+Temps d'apparition de la pièce 3D, premier chargement, même PC :
+≈ 1,8 s sur fibre, ≈ 3,7 s en 4G avec un processeur 4 fois plus lent
+(simulation d'un mobile moyen). Avant le préchauffage des shaders : 4,5 s et 7,2 s.
 
 ## À compléter
 

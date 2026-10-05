@@ -7,6 +7,7 @@ import { Suspense, useEffect, useMemo, useRef, useState, type MutableRefObject }
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { ContactShadows } from '@react-three/drei';
 import { StudioEnv } from './studio-env';
+import { Warmup, useWarmup } from './warmup';
 import * as THREE from 'three';
 import { RectAreaLightUniformsLib } from 'three/examples/jsm/lights/RectAreaLightUniformsLib.js';
 import { Desk, DeskMat, Keyboard, Mouse, Mug, Lamp, Plant, Notebook, Room } from './desk-parts';
@@ -32,9 +33,9 @@ export type SceneMode = 'idle' | 'enter' | 'exit';
 
 /* Ombres figées. Rien ne bouge vraiment dans la pièce : recalculer les
    ombres à chaque image (dont six rendus pour la lampe, une lumière
-   ponctuelle) coûtait la moitié du temps de rendu. On les calcule pendant
-   la première seconde, le temps que tout soit chargé et posé, puis on fige.
-   Seule conséquence : l'ombre d'un cadre survolé ne le suit pas. */
+   ponctuelle) coûtait la moitié du temps de rendu. Tout est chargé et posé
+   avant la première image (voir warmup.tsx) : trois images suffisent, puis
+   on fige. Seule conséquence : l'ombre d'un cadre survolé ne le suit pas. */
 function StaticShadows() {
   const gl = useThree((s) => s.gl);
   const frames = useRef(0);
@@ -44,7 +45,7 @@ function StaticShadows() {
     return () => { gl.shadowMap.autoUpdate = true; };
   }, [gl]);
   useFrame(() => {
-    if (frames.current < 60) { gl.shadowMap.needsUpdate = true; frames.current++; }
+    if (frames.current < 3) { gl.shadowMap.needsUpdate = true; frames.current++; }
   });
   return null;
 }
@@ -115,7 +116,9 @@ function Scene({
   hoverObj,
   anchors,
   registry,
+  warm,
 }: Props & {
+  warm: ReturnType<typeof useWarmup>;
   onHover: (slug: string | null) => void;
   hoverObj: MutableRefObject<THREE.Object3D | null>;
   anchors: MutableRefObject<Anchor[]>;
@@ -131,7 +134,7 @@ function Scene({
 
       {/* Reflets : uniquement des sources chaudes, comme une pièce éclairée
           à la lampe en fin de journée. */}
-      <StudioEnv background="#120c09" panels={[
+      <StudioEnv background="#120c09" {...warm.env} panels={[
         { color: '#ffcf9e', intensity: 1.3, position: [-3, 2.5, 2], scale: [2.5, 1.2], target: [0, 1, 0] },
         { color: '#ffd8b8', intensity: 0.7, position: [3, 2.2, 1.5], scale: [2, 1], target: [0, 1, 0] },
         { color: '#fff1e2', intensity: 0.4, position: [0, 4, 0], scale: [4, 4], target: [0, 0, 0] },
@@ -178,6 +181,8 @@ function Scene({
 
       <StaticShadows />
       <CameraRig mode={mode} onProgress={onProgress} onDone={onDone} />
+      {/* en dernier : tous les objets sont posés quand il compile */}
+      <Warmup {...warm.warmup} />
     </>
   );
 }
@@ -216,20 +221,36 @@ export default function DeskScene(props: Props) {
 
   const hovered = props.projects.find((p) => p.slug === hoverSlug);
 
+  /* Tant que les shaders compilent, rien n'est dessiné : la pièce apparaît
+     en fondu une fois prête. Un clic sur « Entrer » pendant ce temps entre
+     directement, sans attendre la plongée de la caméra. (Le retour depuis
+     l'OS, lui, attend : l'OS reste visible jusqu'à ce que la pièce soit prête.) */
+  const warm = useWarmup();
+  const { live } = warm;
+  const { mode, onDone } = props;
+  useEffect(() => {
+    if (!live && mode === 'enter') onDone('enter');
+  }, [live, mode, onDone]);
+
   return (
     <>
       <Canvas
         shadows="percentage"
+        frameloop={live ? 'always' : 'never'}
+        style={{ opacity: live ? 1 : 0, transition: 'opacity .7s ease' }}
         dpr={[1, 1.75]}
         camera={{ position: START_POS.toArray(), fov: 38, near: 0.05, far: 30 }}
         gl={{ antialias: true, powerPreference: 'high-performance' }}
         onCreated={({ gl }) => {
+          /* En production, ne pas relire le journal de chaque shader : cette
+             lecture attend la fin de la compilation et bloque la page. */
+          gl.debug.checkShaderErrors = process.env.NODE_ENV !== 'production';
           gl.toneMapping = THREE.ACESFilmicToneMapping;
           gl.toneMappingExposure = 1.05;
         }}
       >
         <Suspense fallback={null}>
-          <Scene {...props} onHover={setHoverSlug} hoverObj={hoverObj} anchors={anchors} registry={registry} />
+          <Scene {...props} warm={warm} onHover={setHoverSlug} hoverObj={hoverObj} anchors={anchors} registry={registry} />
         </Suspense>
       </Canvas>
       <div

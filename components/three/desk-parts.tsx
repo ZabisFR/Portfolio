@@ -135,7 +135,7 @@ export function Mug({ accent = '#4cc2ff' }: { accent?: string }) {
   return (
     <group position={[0.76, 0.768, 0.14]} rotation={[0, -0.7, 0]}>
       <mesh geometry={body} castShadow receiveShadow>
-        <meshPhysicalMaterial color={accent} roughness={0.22} clearcoat={0.8} clearcoatRoughness={0.15} />
+        <meshStandardMaterial color={accent} roughness={0.16} />
       </mesh>
       {/* le café */}
       <mesh position={[0, 0.078, 0]} rotation={[-Math.PI / 2, 0, 0]}>
@@ -145,7 +145,7 @@ export function Mug({ accent = '#4cc2ff' }: { accent?: string }) {
       {/* l'anse : demi-anneau vertical, ouvert côté tasse */}
       <mesh position={[0.04, 0.047, 0]} rotation={[0, 0, -Math.PI / 2]} castShadow>
         <torusGeometry args={[0.024, 0.0065, 12, 28, Math.PI]} />
-        <meshPhysicalMaterial color={accent} roughness={0.22} clearcoat={0.8} />
+        <meshStandardMaterial color={accent} roughness={0.16} />
       </mesh>
     </group>
   );

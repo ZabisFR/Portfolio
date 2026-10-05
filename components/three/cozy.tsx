@@ -409,7 +409,7 @@ export function Candle({ position }: { position: [number, number, number] }) {
       {/* pot en verre ambré */}
       <mesh castShadow>
         <cylinderGeometry args={[0.036, 0.034, 0.075, 28, 1, true]} />
-        <meshPhysicalMaterial color="#c98a4b" transparent opacity={0.55} roughness={0.15} side={THREE.DoubleSide} />
+        <meshStandardMaterial color="#c98a4b" transparent opacity={0.55} roughness={0.15} side={THREE.DoubleSide} />
       </mesh>
       <mesh position={[0, -0.012, 0]}>
         <cylinderGeometry args={[0.033, 0.033, 0.05, 24]} />

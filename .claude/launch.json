@@ -3,9 +3,9 @@
   "configurations": [
     {
       "name": "portfolio",
-      "runtimeExecutable": "node",
-      "runtimeArgs": ["tools/dev-server.mjs"],
-      "port": 3021
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "--", "-p", "3022"],
+      "port": 3022
     }
   ]
 }

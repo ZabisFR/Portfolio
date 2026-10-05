@@ -1,3 +1,5 @@
 tools/
 .claude/
+legacy/
 node_modules/
+.next/

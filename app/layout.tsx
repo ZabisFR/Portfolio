@@ -1,0 +1,44 @@
+import type { Metadata, Viewport } from 'next';
+import { Inter, Cascadia_Code } from 'next/font/google';
+import './globals.css';
+import { SITE } from '@/content/site';
+
+/* Les polices sont auto-hébergées par next/font au build : plus aucune requête
+   vers Google au chargement de la page (la mention dans la politique de
+   confidentialité est mise à jour en conséquence). */
+const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap' });
+const cascadia = Cascadia_Code({ subsets: ['latin'], variable: '--font-cascadia', display: 'swap' });
+
+export const metadata: Metadata = {
+  metadataBase: new URL(SITE.url),
+  title: {
+    default: 'Evan Pouteau — Développeur web & étudiant MMI',
+    template: '%s — Evan Pouteau',
+  },
+  description:
+    "Portfolio interactif d'Evan Pouteau, étudiant en BUT MMI à l'IUT Clermont Auvergne et développeur web. Applications Next.js et Supabase, projets design et UX. Recherche un stage en développement web du 12 avril au 18 juin 2027.",
+  authors: [{ name: 'Evan Pouteau' }],
+  openGraph: {
+    type: 'website',
+    locale: 'fr_FR',
+    siteName: 'Evan Pouteau',
+    images: [{ url: '/assets/og.png', width: 1200, height: 630, alt: "EvanOS — le portfolio d'Evan Pouteau" }],
+  },
+  twitter: { card: 'summary_large_image', images: ['/assets/og.png'] },
+  icons: { icon: '/favicon.svg', apple: '/assets/icon-180.png' },
+};
+
+export const viewport: Viewport = {
+  themeColor: '#080c14',
+  width: 'device-width',
+  initialScale: 1,
+  viewportFit: 'cover',
+};
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="fr" data-theme="dark" className={`${inter.variable} ${cascadia.variable}`} suppressHydrationWarning>
+      <body>{children}</body>
+    </html>
+  );
+}

@@ -1,8 +1,8 @@
 node_modules/
+.next/
 .vercel/
+.env*.local
+next-env.d.ts
 .DS_Store
 Thumbs.db
 *.log
-
-.vercel
-.env*

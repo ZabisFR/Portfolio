@@ -4,41 +4,50 @@
    Jetons de design — repris de l'ancienne version statique
    ========================================================================== */
 :root {
-  --accent: #4cc2ff;
-  --accent-ink: #04121c;
-  --bg: #080c14;
-  --bg-2: #0e1420;
-  --surface: rgba(28, 34, 50, .72);
+  /* Palette chaude et douce : argile, sauge, crème. */
+  --accent: #e8956b;
+  /* encre posée SUR la couleur d'accent : toutes les teintes proposées sont
+     claires ou moyennes, une encre sombre reste lisible sur chacune */
+  --accent-ink: #2a140a;
+  /* accent utilisé COMME couleur de texte : en thème clair il est assombri,
+     sinon une teinte douce sur fond crème ne se lit pas */
+  --accent-text: var(--accent);
+  --bg: #15100e;
+  --bg-2: #1e1714;
+  --surface: rgba(44, 35, 31, .78);
   /* fond plein pour les fenêtres en relief : le flou d'arrière-plan ne
      s'applique pas aux éléments transformés en 3D */
-  --win-solid: rgb(22, 27, 39);
-  --surface-2: rgba(255, 255, 255, .04);
-  --surface-3: rgba(255, 255, 255, .08);
-  --border: rgba(255, 255, 255, .09);
-  --border-2: rgba(255, 255, 255, .16);
-  --text: #eceff6;
-  --muted: #98a1b6;
+  --win-solid: rgb(37, 30, 27);
+  --surface-2: rgba(255, 238, 222, .045);
+  --surface-3: rgba(255, 238, 222, .085);
+  --border: rgba(255, 232, 210, .1);
+  --border-2: rgba(255, 232, 210, .17);
+  --text: #f5ede6;
+  --muted: #b8a89b;
   --shadow: 0 2px 6px rgba(0, 0, 0, .28), 0 18px 48px rgba(0, 0, 0, .46);
+  --leaf: rgba(170, 205, 160, .07);
   --r: 8px;
   --r-lg: 12px;
   --ease: cubic-bezier(.2, .9, .3, 1);
   --sans: 'Segoe UI Variable Display', 'Segoe UI', var(--font-inter), system-ui, sans-serif;
   --mono: var(--font-cascadia), 'Cascadia Code', ui-monospace, Consolas, monospace;
+  --hand: var(--font-caveat), 'Segoe Print', 'Bradley Hand', cursive;
 }
 
 :root[data-theme="light"] {
-  --bg: #e9edf5;
-  --bg-2: #f4f6fb;
-  --surface: rgba(255, 255, 255, .78);
-  --win-solid: rgb(247, 249, 252);
-  --surface-2: rgba(10, 20, 40, .035);
-  --surface-3: rgba(10, 20, 40, .07);
-  --border: rgba(10, 20, 40, .1);
-  --border-2: rgba(10, 20, 40, .18);
-  --text: #131823;
-  --muted: #5a6478;
-  --shadow: 0 2px 6px rgba(20, 30, 60, .1), 0 18px 44px rgba(20, 30, 60, .16);
-  --accent-ink: #fff;
+  --accent-text: color-mix(in srgb, var(--accent) 58%, #2a140a);
+  --bg: #f4ebe2;
+  --bg-2: #fbf6f0;
+  --surface: rgba(255, 252, 248, .84);
+  --win-solid: rgb(253, 250, 246);
+  --surface-2: rgba(70, 40, 20, .035);
+  --surface-3: rgba(70, 40, 20, .07);
+  --border: rgba(70, 40, 20, .1);
+  --border-2: rgba(70, 40, 20, .18);
+  --text: #2b211b;
+  --muted: #76655a;
+  --shadow: 0 2px 6px rgba(70, 40, 20, .08), 0 18px 44px rgba(70, 40, 20, .14);
+  --leaf: rgba(90, 130, 85, .09);
 }
 
 html, body { height: 100%; }
@@ -69,8 +78,10 @@ body {
 .scene-ui {
   position: absolute; left: 0; right: 0; bottom: 0; z-index: 2;
   display: flex; align-items: flex-end; justify-content: space-between; gap: 16px;
-  padding: 28px clamp(16px, 4vw, 48px);
+  padding: 60px clamp(16px, 4vw, 48px) 28px;
   pointer-events: none;
+  /* voile sombre en bas : le texte reste lisible même sur le tapis clair */
+  background: linear-gradient(transparent, rgba(18, 11, 8, .55) 35%, rgba(18, 11, 8, .82));
   transition: opacity .4s var(--ease);
 }
 .scene-ui > * { pointer-events: auto; }

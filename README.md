@@ -36,7 +36,8 @@ components/
 public/assets/
   covers/                   Couverture 1600×1000 de chaque projet (+ covers/3d/ en 1024 px)
   shots/                    Captures d'écran des applications
-  screen/os-desktop.webp    Capture du bureau affichée sur le moniteur 3D
+  screen/os-desktop.webp    Capture du bureau affichée sur le moniteur 3D (à refaire si le bureau change)
+  wallpaper/leaves.svg      Feuillage du fond d'écran (généré par tools/build-wallpaper.mjs)
   docs/                     CV et documents de projet
 legacy/                     L'ancienne version statique, gardée pour mémoire (non déployée)
 ```
@@ -47,6 +48,10 @@ legacy/                     L'ancienne version statique, gardée pour mémoire (
 dans `public/assets/covers/<slug>.webp` (1600×1000) et sa version 3D dans
 `public/assets/covers/3d/<slug>.webp` (1024×640). La page indexable, l'explorateur,
 l'étagère, le carrousel, le menu Démarrer et le terminal suivent tout seuls.
+
+**Modifier les textes personnels du bureau** — la phrase d'accueil, le widget
+« En ce moment » et le post-it sont dans `content/site.ts` (`GREETING`, `PITCH`,
+`NOW`, `STICKY_NOTE`).
 
 **Mettre à jour le CV** — remplacer `public/assets/docs/CV-Evan-Pouteau-FR.pdf`
 ou `-EN.pdf` en gardant le nom exact. Le site sert la version qui correspond à
@@ -77,6 +82,11 @@ framework Next.js (le projet Vercel a été créé à l'époque du site statique
   `components/three/projected-labels.tsx`.
 - **Pas d'`<Environment>` de drei** : il embarque des chargeurs HDR inutiles.
   L'éclairage d'environnement est construit par `components/three/studio-env.tsx`.
+- **Ombres figées** (`StaticShadows` dans `desk-scene.tsx`) : calculées la
+  première seconde puis gelées. Les recalculer à chaque image faisait tomber
+  la scène de 60 à 30 images/seconde sur une carte graphique intégrée.
+- **Polices secondaires non préchargées** (`app/layout.tsx`) : la manuscrite et
+  la chasse fixe ne se téléchargent que si un texte les utilise.
 - **Fenêtres opaques en mode relief** : Chrome n'applique pas `backdrop-filter`
   aux éléments placés en 3D, on lirait sinon le texte des fenêtres de derrière.
 
@@ -84,14 +94,14 @@ framework Next.js (le projet Vercel a été créé à l'époque du site statique
 
 | Parcours | Transféré |
 |---|---|
-| Accueil avec scène 3D | ≈ 820 Ko |
-| OS + galerie 3D | ≈ 710 Ko |
-| OS sans 3D | ≈ 290 Ko |
-| Page projet | ≈ 320 Ko |
+| Accueil avec scène 3D | ≈ 885 Ko |
+| OS + galerie 3D | ≈ 885 Ko |
+| OS sans 3D | ≈ 380 Ko |
+| Page projet | ≈ 325 Ko |
+
+Fluidité mesurée sur une carte graphique Intel intégrée : 60 images/seconde.
 
 ## À compléter
 
-- **Lobby de l'Urbex** : l'ancienne adresse InfinityFree ne répond plus depuis
-  la migration vers Render. Ajouter la nouvelle adresse dans `links` du projet.
 - `public/assets/docs/projet-fillia-etude-ux.pdf` pèse 19 Mo ; une version
   compressée serait préférable.

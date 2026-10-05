@@ -10,6 +10,7 @@ import { StudioEnv } from './studio-env';
 import * as THREE from 'three';
 import { RectAreaLightUniformsLib } from 'three/examples/jsm/lights/RectAreaLightUniformsLib.js';
 import { Desk, DeskMat, Keyboard, Mouse, Mug, Lamp, Plant, Notebook, Room } from './desk-parts';
+import { Monstera, FiddleFig, HangingPothos, StringLights, Candle, Rug } from './cozy';
 import { Monitor, SCREEN } from './monitor';
 import { ProjectShelf } from './project-shelf';
 import { LabelProjector, useLabelRegistry, type Anchor } from './projected-labels';
@@ -28,6 +29,25 @@ const END_POS = new THREE.Vector3(SCREEN.center.x, SCREEN.center.y, SCREEN.cente
 const END_LOOK = SCREEN.center.clone();
 
 export type SceneMode = 'idle' | 'enter' | 'exit';
+
+/* Ombres figées. Rien ne bouge vraiment dans la pièce : recalculer les
+   ombres à chaque image (dont six rendus pour la lampe, une lumière
+   ponctuelle) coûtait la moitié du temps de rendu. On les calcule pendant
+   la première seconde, le temps que tout soit chargé et posé, puis on fige.
+   Seule conséquence : l'ombre d'un cadre survolé ne le suit pas. */
+function StaticShadows() {
+  const gl = useThree((s) => s.gl);
+  const frames = useRef(0);
+  useEffect(() => {
+    gl.shadowMap.autoUpdate = false;
+    gl.shadowMap.needsUpdate = true;
+    return () => { gl.shadowMap.autoUpdate = true; };
+  }, [gl]);
+  useFrame(() => {
+    if (frames.current < 60) { gl.shadowMap.needsUpdate = true; frames.current++; }
+  });
+  return null;
+}
 
 const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
 
@@ -106,28 +126,34 @@ function Scene({
 
   return (
     <>
-      <color attach="background" args={['#0a0d14']} />
-      <fog attach="fog" args={['#0a0d14', 4.5, 9]} />
+      <color attach="background" args={['#17100c']} />
+      <fog attach="fog" args={['#17100c', 5, 10]} />
 
-      {/* Environnement construit sur place : quelques panneaux lumineux
-          virtuels suffisent à donner de vrais reflets au métal, à la
-          céramique et aux vitres des cadres — sans fichier HDR à télécharger. */}
-      <StudioEnv panels={[
-        { color: '#ffd9a8', intensity: 1.6, position: [-3, 2.5, 2], scale: [2.5, 1.2], target: [0, 1, 0] },
-        { color: '#9fc0ff', intensity: 1.1, position: [3, 2.2, 1.5], scale: [2, 1], target: [0, 1, 0] },
-        { color: '#ffffff', intensity: 0.7, position: [0, 4, 0], scale: [4, 4], target: [0, 0, 0] },
-        { color: accent, intensity: 2, position: [0, 1.3, -1], scale: [1.2, 1.2], target: [0, 1.3, 2], circle: true },
+      {/* Reflets : uniquement des sources chaudes, comme une pièce éclairée
+          à la lampe en fin de journée. */}
+      <StudioEnv background="#120c09" panels={[
+        { color: '#ffcf9e', intensity: 1.3, position: [-3, 2.5, 2], scale: [2.5, 1.2], target: [0, 1, 0] },
+        { color: '#ffd8b8', intensity: 0.7, position: [3, 2.2, 1.5], scale: [2, 1], target: [0, 1, 0] },
+        { color: '#fff1e2', intensity: 0.4, position: [0, 4, 0], scale: [4, 4], target: [0, 0, 0] },
+        { color: accent, intensity: 1.4, position: [0, 1.3, -1], scale: [1.2, 1.2], target: [0, 1.3, 2], circle: true },
       ]} />
 
-      <hemisphereLight args={['#8fb4ff', '#1a1208', 0.4]} />
-      <ambientLight intensity={0.1} />
-      {/* lumière rasante sur le mur : détache les étagères du fond */}
-      <pointLight position={[0, 2.75, -0.7]} intensity={3.4} distance={4.2} decay={1.6} color="#c9d8ff" />
-      {/* lumière chaude de la lampe */}
-      <pointLight position={[-0.74, 1.12, -0.1]} intensity={1.9} distance={2.6} decay={2} color="#ffcf8f" castShadow shadow-mapSize={[1024, 1024]} shadow-bias={-0.0004} />
-      {/* contre-jour froid */}
-      <directionalLight position={[2.5, 3.2, 1.5]} intensity={0.45} color="#a9c4ff" castShadow shadow-mapSize={[2048, 2048]} shadow-bias={-0.0003}
+      {/* Lumière tamisée : aucune source froide, des intensités basses, et
+          plusieurs petites lumières chaudes plutôt qu'une grosse. */}
+      <hemisphereLight args={['#ffd9b5', '#2b1a10', 0.24]} />
+      <ambientLight intensity={0.06} />
+      <pointLight position={[0, 2.6, -0.65]} intensity={1.05} distance={3.6} decay={1.8} color="#ffcf9a" />
+      <pointLight position={[-0.74, 1.12, -0.1]} intensity={2.3} distance={2.8} decay={2} color="#ffb06a" castShadow shadow-mapSize={[1024, 1024]} shadow-bias={-0.0004} />
+      <directionalLight position={[2.2, 3, 2]} intensity={0.32} color="#ffe0c2" castShadow shadow-mapSize={[2048, 2048]} shadow-bias={-0.0003}
         shadow-camera-left={-3} shadow-camera-right={3} shadow-camera-top={3} shadow-camera-bottom={-1} />
+
+      <Rug />
+      <StringLights from={[-1.68, 2.42, -1.27]} to={[1.68, 2.42, -1.27]} sag={0.2} />
+      <Monstera position={[1.78, 0, -0.62]} scale={1.15} />
+      <FiddleFig position={[-2.2, 0, -0.72]} scale={0.9} />
+      <HangingPothos position={[2.24, 2.36, -0.98]} short />
+      <HangingPothos position={[-2.24, 2.36, -0.98]} short />
+      <Candle position={[-0.68, 0.805, 0.2]} />
 
       <Room accent={accent} />
       <Desk />
@@ -147,9 +173,10 @@ function Scene({
       <ProjectShelf projects={projects} onOpen={onOpenProject} onHover={onHover} hoverObj={hoverObj} disabled={mode !== 'idle'} />
       <LabelProjector anchors={anchors} registry={registry} />
 
-      <ContactShadows position={[0, 0.002, 0]} opacity={0.6} scale={7} blur={2.4} far={1.4} />
+      <ContactShadows position={[0, 0.012, 0]} opacity={0.55} scale={7} blur={2.4} far={1.4} />
       <ContactShadows position={[0, 0.7716, 0]} opacity={0.5} scale={[2.6, 1.2]} blur={1.6} far={0.3} resolution={512} />
 
+      <StaticShadows />
       <CameraRig mode={mode} onProgress={onProgress} onDone={onDone} />
     </>
   );

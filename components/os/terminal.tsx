@@ -78,7 +78,12 @@ export function TerminalWin({ openWin, lang }: Ctx) {
       fr: 'ouvrir un projet : open muscu', en: 'open a project: open muscu',
       run: (args) => {
         const q = (args[0] || '').toLowerCase();
-        const p = PROJECTS.find((x) => x.slug === q || x.slug.startsWith(q));
+        /* On accepte un bout d'identifiant ou de nom, sans accents : « urbex »,
+           « crozatier » ou « arabe » doivent suffire. */
+        const norm = (t: string) => t.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase();
+        const p = PROJECTS.find((x) => x.slug === q)
+          ?? PROJECTS.find((x) => x.slug.startsWith(q))
+          ?? PROJECTS.find((x) => x.slug.includes(q) || norm(x.name.fr).includes(norm(q)) || norm(x.name.en).includes(norm(q)));
         if (!q) return push([en ? 'Usage: open <slug>' : 'Usage : open <slug>', 't-err']);
         if (!p) return push([`${en ? 'Unknown project' : 'Projet inconnu'} : ${q}`, 't-err']);
         push(<D>{en ? 'Opening' : 'Ouverture de'} {p.name[lang]}…</D>);

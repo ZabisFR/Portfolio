@@ -78,7 +78,7 @@ export function Monitor({
         position={[center.x, center.y, center.z + 0.02]}
         width={width}
         height={height}
-        intensity={hovered ? 3.4 : 2.4}
+        intensity={hovered ? 2.4 : 1.6}
         color={accent}
       />
     </group>

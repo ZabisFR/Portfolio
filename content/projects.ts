@@ -183,10 +183,15 @@ export const PROJECTS: Project[] = [
     type: { fr: 'Site dynamique', en: 'Dynamic website' },
     year: '2026',
     category: 'dev',
-    tags: ['PHP', 'MySQL', 'JavaScript'],
+    tags: ['PHP', 'MySQL', 'JavaScript', 'Docker', 'Render'],
+    live: 'https://lobby-urbex.onrender.com/',
     role: { fr: 'Conception de la base, développement', en: 'Database design, development' },
     context: { fr: 'Projet individuel', en: 'Individual project' },
     cover: '/assets/covers/lobby-urbex.webp',
+    shots: [
+      { src: '/assets/shots/urbex-home.webp', caption: { fr: 'L’accueil et les derniers spots', en: 'The home page and latest spots' } },
+      { src: '/assets/shots/urbex-lieu.webp', caption: { fr: 'Une fiche de lieu : danger, équipement, état', en: 'A location page: danger, gear, condition' } },
+    ],
     blocks: [
       {
         h: { fr: 'Le projet', en: 'The project' },
@@ -202,11 +207,22 @@ export const PROJECTS: Project[] = [
           en: 'This is the project where I first wired a form, an SQL query and a rendered page together — the full chain of a dynamic site, with no framework hiding it. The database was modelled before a single query was written, and every access goes through prepared statements (PDO) to close the door on SQL injection.',
         },
       },
+      {
+        h: { fr: 'La mise en ligne', en: 'Going live' },
+        p: {
+          fr: 'Le site tournait sur un hébergement gratuit PHP qui a fini par lâcher. Je l’ai migré vers Render dans un conteneur Docker, avec une base TiDB compatible MySQL : aucune requête à réécrire, et les identifiants passent désormais par des variables d’environnement au lieu d’être écrits dans le code.',
+          en: 'The site ran on a free PHP host that eventually gave out. I moved it to Render in a Docker container, with a MySQL-compatible TiDB database: no query to rewrite, and credentials now come from environment variables instead of being written in the code.',
+        },
+      },
     ],
-    /* L'ancienne adresse InfinityFree ne répond plus depuis la migration vers
-       Render. À remettre ici dès que la nouvelle adresse est connue. */
-    links: [],
-    three: { color: '#6a8fb5' },
+    note: {
+      fr: 'Hébergement gratuit : si le site n’a pas été visité depuis un moment, le serveur met jusqu’à une minute à se réveiller au premier chargement.',
+      en: 'Free hosting: if the site has not been visited for a while, the server can take up to a minute to wake up on first load.',
+    },
+    links: [
+      { label: { fr: 'Ouvrir le site', en: 'Open the site' }, href: 'https://lobby-urbex.onrender.com/', kind: 'url' },
+    ],
+    three: { color: '#f2b632' },
   },
 
   {

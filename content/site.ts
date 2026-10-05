@@ -147,3 +147,44 @@ export const SKILLS: { group: L; rows: { k: string; v: L }[] }[] = [
     ],
   },
 ];
+
+/* ------------------------------------------------------------------------
+   Textes personnels du bureau (widgets et post-it). À modifier librement :
+   ce sont eux qui donnent la voix du site.
+   ------------------------------------------------------------------------ */
+
+export const GREETING: L = {
+  fr: 'Salut, moi c’est Evan.',
+  en: 'Hi, I’m Evan.',
+};
+
+export const PITCH: L = {
+  fr: 'Je suis étudiant en BUT MMI à Puy-en-Velay et je cherche un stage en développement web du 12 avril au 18 juin 2027.',
+  en: 'I’m a BUT MMI student in Puy-en-Velay, looking for a web development internship from 12 April to 18 June 2027.',
+};
+
+export const NOW: { icon: 'school' | 'tool' | 'heart'; text: L }[] = [
+  {
+    icon: 'school',
+    text: {
+      fr: '2ᵉ année de BUT MMI, parcours Développement, à l’IUT de Puy-en-Velay.',
+      en: '2nd year of a BUT MMI, Web Development track, at the IUT in Puy-en-Velay.',
+    },
+  },
+  {
+    icon: 'tool',
+    text: {
+      fr: 'Je construis mes propres outils : une app pour apprendre l’arabe égyptien, une autre pour suivre mes séances de sport.',
+      en: 'I build my own tools: an app to learn Egyptian Arabic, another to log my workouts.',
+    },
+  },
+  {
+    icon: 'heart',
+    text: { fr: 'Ce qui me plaît : la technologie et le sport.', en: 'What I enjoy: technology and sport.' },
+  },
+];
+
+export const STICKY_NOTE: L = {
+  fr: 'Merci de passer par ici ! Si vous n’avez qu’une minute : ouvrez « Mes projets en 3D », puis mon CV.',
+  en: 'Thanks for stopping by! If you only have a minute: open “My projects in 3D”, then my CV.',
+};

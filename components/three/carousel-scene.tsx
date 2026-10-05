@@ -76,7 +76,7 @@ function Card({ index, texture, ring, onPick }: {
       </mesh>
       {/* dos et tranche de la carte */}
       <RoundedBox args={[CARD_W + 0.02, CARD_H + 0.02, 0.02]} radius={0.03} smoothness={3} position={[0, 0, -0.011]} castShadow>
-        <meshStandardMaterial color="#12151c" roughness={0.3} metalness={0.6} />
+        <meshStandardMaterial color="#1c1410" roughness={0.3} metalness={0.6} />
       </RoundedBox>
       <mesh geometry={geo}>
         <meshBasicMaterial ref={image} map={texture} toneMapped={false} />
@@ -177,11 +177,11 @@ export default function CarouselScene(props: Props) {
       gl={{ antialias: true }}
       onCreated={({ gl }) => { gl.toneMapping = THREE.ACESFilmicToneMapping; }}
     >
-      <color attach="background" args={['#07090f']} />
-      <fog attach="fog" args={['#07090f', RADIUS + 2.5, RADIUS * 2 + 4]} />
+      <color attach="background" args={['#140e0b']} />
+      <fog attach="fog" args={['#140e0b', RADIUS + 2.5, RADIUS * 2 + 4]} />
       <StudioEnv panels={[
         { color: '#ffffff', intensity: 1.2, position: [0, 3, 2], scale: [6, 2], target: [0, 0, 0] },
-        { color: '#7aa7ff', intensity: 0.6, position: [-4, 1, 1], scale: [2, 3], target: [0, 0, 0] },
+        { color: '#ffb98a', intensity: 0.6, position: [-4, 1, 1], scale: [2, 3], target: [0, 0, 0] },
       ]} />
       <ambientLight intensity={0.5} />
 
@@ -197,13 +197,13 @@ export default function CarouselScene(props: Props) {
           mixStrength={6}
           depthScale={1}
           minDepthThreshold={0.85}
-          color="#0a0c12"
+          color="#120c09"
           metalness={0.6}
           roughness={0.9}
           mirror={0.6}
         />
       </mesh>
-      <Sparkles count={60} scale={[RADIUS * 3, 3, RADIUS * 3]} size={1.6} speed={0.25} opacity={0.35} color="#9fc4ff" />
+      <Sparkles count={60} scale={[RADIUS * 3, 3, RADIUS * 3]} size={1.6} speed={0.25} opacity={0.35} color="#ffd2a0" />
     </Canvas>
   );
 }

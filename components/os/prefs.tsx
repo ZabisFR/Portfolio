@@ -19,16 +19,16 @@ export type Prefs = {
 };
 
 export const ACCENTS: [string, { fr: string; en: string }][] = [
+  ['#e8956b', { fr: 'Argile', en: 'Clay' }],
+  ['#8fbf8f', { fr: 'Sauge', en: 'Sage' }],
+  ['#f2b632', { fr: 'Miel', en: 'Honey' }],
+  ['#f07ca0', { fr: 'Rose', en: 'Rose' }],
+  ['#a78bfa', { fr: 'Lavande', en: 'Lavender' }],
   ['#4cc2ff', { fr: 'Bleu', en: 'Blue' }],
-  ['#7c5cff', { fr: 'Violet', en: 'Purple' }],
-  ['#22c55e', { fr: 'Vert', en: 'Green' }],
-  ['#f59e0b', { fr: 'Ambre', en: 'Amber' }],
-  ['#f43f5e', { fr: 'Rose', en: 'Rose' }],
-  ['#14b8a6', { fr: 'Turquoise', en: 'Teal' }],
 ];
 
 const KEY = 'evanos.prefs';
-const DEFAULTS: Prefs = { theme: 'dark', lang: 'fr', accent: '#4cc2ff', sound: false, depth: true };
+const DEFAULTS: Prefs = { theme: 'dark', lang: 'fr', accent: '#e8956b', sound: false, depth: true };
 
 let state: Prefs = DEFAULTS;
 let hydrated = false;

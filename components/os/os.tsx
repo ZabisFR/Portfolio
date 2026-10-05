@@ -14,30 +14,38 @@ import { AboutWin, AppsWin, ContactWin, LegalWin, ProjectsWin, ProjectWin, Viewe
 import { TerminalWin } from './terminal';
 import { GalleryWin } from './gallery-win';
 import { sfx } from './sfx';
+import { WelcomeWin, Widgets, cvPayload } from './welcome';
 
 /* -------------------------------------------------------- registre des fenêtres */
 
 type Def = { title: L; icon: IconName; size: { w: number; h: number }; body?: string };
 
 const DEFS: Record<string, Def> = {
-  about: { title: { fr: 'Ce PC — Evan Pouteau', en: 'This PC — Evan Pouteau' }, icon: 'user', size: { w: 760, h: 620 } },
+  welcome: { title: { fr: 'Bienvenue', en: 'Welcome' }, icon: 'hand', size: { w: 720, h: 640 } },
+  about: { title: { fr: 'À propos de moi', en: 'About me' }, icon: 'user', size: { w: 760, h: 620 } },
   apps: { title: { fr: 'Mes applications', en: 'My apps' }, icon: 'apps', size: { w: 1000, h: 680 } },
-  projects: { title: { fr: 'Projets', en: 'Projects' }, icon: 'folder', size: { w: 1000, h: 640 }, body: 'p-0' },
-  gallery: { title: { fr: 'Galerie 3D', en: '3D Gallery' }, icon: 'cube', size: { w: 1080, h: 700 }, body: 'p-0' },
-  terminal: { title: { fr: 'Windows PowerShell', en: 'Windows PowerShell' }, icon: 'terminal', size: { w: 700, h: 520 }, body: 'term-body' },
-  contact: { title: { fr: 'Nouveau message', en: 'New message' }, icon: 'mail', size: { w: 640, h: 600 } },
+  projects: { title: { fr: 'Tous mes projets', en: 'All my projects' }, icon: 'folder', size: { w: 1000, h: 640 }, body: 'p-0' },
+  gallery: { title: { fr: 'Mes projets en 3D', en: 'My projects in 3D' }, icon: 'cube', size: { w: 1080, h: 700 }, body: 'p-0' },
+  terminal: { title: { fr: 'Terminal', en: 'Terminal' }, icon: 'terminal', size: { w: 700, h: 520 }, body: 'term-body' },
+  contact: { title: { fr: 'Me contacter', en: 'Contact me' }, icon: 'mail', size: { w: 640, h: 600 } },
   legal: { title: { fr: 'Mentions légales', en: 'Legal notice' }, icon: 'scale', size: { w: 780, h: 620 }, body: 'p-0' },
-  viewer: { title: { fr: 'Visionneuse', en: 'Viewer' }, icon: 'folder', size: { w: 900, h: 680 }, body: 'p-0' },
+  viewer: { title: { fr: 'Visionneuse', en: 'Viewer' }, icon: 'file', size: { w: 900, h: 680 }, body: 'p-0' },
 };
 
-const DESKTOP: { id: string; icon: IconName; label: L; accent?: boolean }[] = [
-  { id: 'about', icon: 'user', label: { fr: 'Ce PC', en: 'This PC' } },
-  { id: 'apps', icon: 'apps', label: { fr: 'Mes applications', en: 'My apps' }, accent: true },
-  { id: 'projects', icon: 'folder', label: { fr: 'Projets', en: 'Projects' } },
-  { id: 'gallery', icon: 'cube', label: { fr: 'Galerie 3D', en: '3D Gallery' } },
-  { id: 'terminal', icon: 'terminal', label: { fr: 'Terminal', en: 'Terminal' } },
-  { id: 'contact', icon: 'mail', label: { fr: 'Contact', en: 'Contact' } },
+/* Icônes du bureau, dans l'ordre où un visiteur en a besoin. Chaque icône a
+   une phrase d'explication, affichée au survol. */
+type Desk = { id: string; icon: IconName; label: L; hint: L; accent?: boolean };
+const DESKTOP: Desk[] = [
+  { id: 'welcome', icon: 'hand', label: { fr: 'Bienvenue', en: 'Welcome' }, hint: { fr: 'Le mode d’emploi du site', en: 'How this site works' } },
+  { id: 'gallery', icon: 'cube', label: { fr: 'Mes projets en 3D', en: 'My projects in 3D' }, hint: { fr: 'Feuilleter mes projets un par un', en: 'Browse my projects one by one' }, accent: true },
+  { id: 'about', icon: 'user', label: { fr: 'À propos de moi', en: 'About me' }, hint: { fr: 'Mon parcours, mes études, mes expériences', en: 'My background, studies and experience' } },
+  { id: 'cv', icon: 'file', label: { fr: 'Mon CV', en: 'My CV' }, hint: { fr: 'Lire ou télécharger mon CV', en: 'Read or download my CV' } },
+  { id: 'apps', icon: 'apps', label: { fr: 'Mes applications', en: 'My apps' }, hint: { fr: 'Les deux applications que j’ai mises en ligne', en: 'The two apps I have shipped' } },
+  { id: 'projects', icon: 'folder', label: { fr: 'Tous mes projets', en: 'All my projects' }, hint: { fr: 'La liste complète, avec une recherche', en: 'The full list, searchable' } },
+  { id: 'contact', icon: 'mail', label: { fr: 'Me contacter', en: 'Contact me' }, hint: { fr: 'M’écrire un message', en: 'Write me a message' } },
 ];
+/* Le terminal est un clin d'œil pour les développeurs : on le range à part. */
+const DEV_CORNER: Desk = { id: 'terminal', icon: 'terminal', label: { fr: 'Terminal (pour les devs)', en: 'Terminal (for devs)' }, hint: { fr: 'Des commandes à taper, pour les curieux', en: 'Commands to type, for the curious' } };
 
 /* ------------------------------------------------------------------ racine */
 
@@ -55,33 +63,41 @@ function Desktop({ initialWindow, onBackTo3D }: { initialWindow?: string; onBack
   const lang = prefs.lang;
   const mobile = useIsMobile();
   const [panel, setPanel] = useState<'start' | 'quick' | null>(null);
-  const [toast, setToast] = useState<null | { title: string; body: string; cta?: string; action?: () => void }>(null);
   const layer = useRef<HTMLDivElement>(null);
 
   /* Ouvrir une fenêtre de premier niveau, une fiche projet ou la visionneuse. */
   const openWin = useCallback((id: string, payload?: unknown) => {
+    if (id === 'cv') {
+      /* Les navigateurs mobiles affichent mal un PDF dans une fenêtre : on
+         l'ouvre directement, ils savent le présenter. */
+      if (mobile) { window.open(SITE.cv[lang], '_blank', 'noopener'); return; }
+      id = 'viewer';
+      payload = cvPayload(lang);
+    }
     const proj = id.startsWith('project:') ? bySlug(id.slice(8)) : null;
     const def = DEFS[id];
     wm.open(id, { size: proj ? { w: 820, h: 620 } : def?.size, payload });
     setPanel(null);
-  }, [wm]);
+  }, [wm, mobile, lang]);
 
   const openViewer = useCallback((p: ViewerPayload) => openWin('viewer', p), [openWin]);
 
-  /* Fenêtre demandée par l'URL (lien profond depuis une page projet, etc.) */
+  /* Fenêtre demandée par l'URL (lien profond depuis une page projet, etc.) ;
+     sinon, à la première arrivée de la session, le guide de bienvenue. */
   useEffect(() => {
-    if (initialWindow) openWin(initialWindow);
-    else {
-      const t = setTimeout(() => { sfx.toast(); setToast({
-        title: 'Evan Pouteau',
-        body: lang === 'en'
-          ? 'Seeking a web development internship for spring 2027. Two apps in production — have a look.'
-          : 'Recherche un stage en développement web pour le printemps 2027. Deux applications en production — jetez-y un œil.',
-        cta: lang === 'en' ? 'See my apps' : 'Voir mes applications',
-        action: () => openWin('apps'),
-      }); }, 1200);
-      return () => clearTimeout(t);
-    }
+    if (initialWindow) { openWin(initialWindow); return; }
+    let seen = false;
+    try { seen = sessionStorage.getItem('evanos.welcomed') === '1'; } catch { /* ignore */ }
+    if (seen) return;
+    /* La marque n'est posée qu'à l'ouverture effective : si l'effet est
+       annulé avant (React le joue deux fois en développement), le guide
+       s'ouvre quand même au second passage. */
+    const t = setTimeout(() => {
+      try { sessionStorage.setItem('evanos.welcomed', '1'); } catch { /* ignore */ }
+      sfx.toast();
+      openWin('welcome');
+    }, 450);
+    return () => clearTimeout(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -129,12 +145,13 @@ function Desktop({ initialWindow, onBackTo3D }: { initialWindow?: string; onBack
     if (id === 'viewer') return (wm.wins.viewer?.payload as ViewerPayload | undefined)?.name ?? DEFS.viewer.title[lang];
     return DEFS[id]?.title[lang] ?? id;
   };
-  const iconOf = (id: string): IconName => (id.startsWith('project:') ? 'apps' : DEFS[id]?.icon ?? 'folder');
+  const iconOf = (id: string): IconName => (id.startsWith('project:') ? 'folder' : DEFS[id]?.icon ?? 'folder');
 
   const render = (id: string) => {
     const ctx = { openWin, openViewer, lang };
     if (id.startsWith('project:')) return <ProjectWin slug={id.slice(8)} {...ctx} />;
     switch (id) {
+      case 'welcome': return <WelcomeWin {...ctx} />;
       case 'about': return <AboutWin {...ctx} />;
       case 'apps': return <AppsWin {...ctx} />;
       case 'projects': return <ProjectsWin {...ctx} />;
@@ -142,7 +159,7 @@ function Desktop({ initialWindow, onBackTo3D }: { initialWindow?: string; onBack
       case 'terminal': return <TerminalWin {...ctx} />;
       case 'contact': return <ContactWin {...ctx} />;
       case 'legal': return <LegalWin {...ctx} />;
-      case 'viewer': return <ViewerWin payload={wm.wins.viewer?.payload as ViewerPayload} />;
+      case 'viewer': return <ViewerWin payload={wm.wins.viewer?.payload as ViewerPayload} lang={lang} />;
       default: return null;
     }
   };
@@ -162,17 +179,17 @@ function Desktop({ initialWindow, onBackTo3D }: { initialWindow?: string; onBack
         <ul className="desktop-icons">
           {DESKTOP.map((d) => (
             <li key={d.id}>
-              <button className="desktop-icon" onClick={(e) => { e.stopPropagation(); openWin(d.id); }}>
-                <span className={`ic-tile${d.accent ? ' accent' : ''}`}><Icon name={d.icon} size={25} /></span>
-                <span className="ic-label">{d.label[lang]}</span>
-              </button>
+              <DeskIcon d={d} lang={lang} onOpen={openWin} />
             </li>
           ))}
         </ul>
+        <div className="dev-corner"><DeskIcon d={DEV_CORNER} lang={lang} onOpen={openWin} small /></div>
+        <Widgets openWin={openWin} lang={lang} />
         <p className="desktop-hint">
+          <Icon name="help" size={15} />
           {lang === 'en'
-            ? <>Drag the windows, snap them to the edges, or press <kbd>?</kbd> for the Start menu.</>
-            : <>Glissez les fenêtres, ancrez-les aux bords, ou tapez <kbd>?</kbd> pour le menu Démarrer.</>}
+            ? 'Click an icon to open it. Your open windows wait in the bar at the bottom.'
+            : 'Cliquez sur une icône pour l’ouvrir. Vos fenêtres ouvertes vous attendent dans la barre du bas.'}
         </p>
       </main>
 
@@ -231,27 +248,16 @@ function Desktop({ initialWindow, onBackTo3D }: { initialWindow?: string; onBack
         </div>
       )}
 
-      {/* ---------------------------------------------------- notification */}
-      {toast && (
-        <div className="toasts" role="region" aria-live="polite" onClick={(e) => e.stopPropagation()}>
-          <div className="toast">
-            <div className="toast-ic"><Icon name="apps" size={19} /></div>
-            <div>
-              <b>{toast.title}</b>
-              <p>{toast.body}</p>
-              {toast.cta && <button className="btn btn-primary btn-sm" onClick={() => { toast.action?.(); setToast(null); }}>{toast.cta}</button>}
-            </div>
-            <button className="toast-x" aria-label={lang === 'en' ? 'Close' : 'Fermer'} onClick={() => setToast(null)}>✕</button>
-          </div>
-        </div>
-      )}
-
       {/* ------------------------------------------------- barre des tâches */}
       <footer className="taskbar" style={{ height: TASKBAR }} onClick={(e) => e.stopPropagation()}>
         <div className="tb-center">
           <button className="tb-start" aria-label={lang === 'en' ? 'Start menu' : 'Menu Démarrer'} aria-expanded={panel === 'start'}
             onClick={() => { sfx.click(); setPanel((p) => (p === 'start' ? null : 'start')); }}>
             <span className="winlogo"><i /><i /><i /><i /></span>
+          </button>
+          <button className="tb-help" onClick={() => openWin('welcome')} title={lang === 'en' ? 'Help: how this site works' : 'Aide : comment fonctionne ce site'}
+            aria-label={lang === 'en' ? 'Help' : 'Aide'}>
+            <Icon name="help" size={19} /><span>{lang === 'en' ? 'Help' : 'Aide'}</span>
           </button>
           <div className="tb-tasks">
             {tasks.map((w) => (
@@ -279,6 +285,22 @@ function Desktop({ initialWindow, onBackTo3D }: { initialWindow?: string; onBack
   );
 }
 
+/* ------------------------------------------------------------ icône du bureau */
+
+function DeskIcon({ d, lang, onOpen, small }: { d: Desk; lang: 'fr' | 'en'; onOpen: (id: string) => void; small?: boolean }) {
+  return (
+    <button
+      className={`desktop-icon${small ? ' is-small' : ''}`}
+      title={d.hint[lang]}
+      aria-description={d.hint[lang]}
+      onClick={(e) => { e.stopPropagation(); onOpen(d.id); }}
+    >
+      <span className={`ic-tile${d.accent ? ' accent' : ''}`}><Icon name={d.icon} size={small ? 20 : 25} /></span>
+      <span className="ic-label">{d.label[lang]}</span>
+    </button>
+  );
+}
+
 /* ----------------------------------------------------------- menu Démarrer */
 
 function StartMenu({ lang, openWin, onBackTo3D, onShutdown }: {
@@ -290,6 +312,7 @@ function StartMenu({ lang, openWin, onBackTo3D, onShutdown }: {
   const [q, setQ] = useState('');
   const apps: { id: string; icon: IconName; label: L }[] = [
     ...DESKTOP,
+    DEV_CORNER,
     { id: 'legal', icon: 'scale', label: { fr: 'Mentions légales', en: 'Legal notice' } },
   ];
   const projects = PROJECTS.filter((p) => !q || p.name[lang].toLowerCase().includes(q.toLowerCase()));

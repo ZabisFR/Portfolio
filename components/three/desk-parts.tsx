@@ -255,36 +255,43 @@ export function Notebook({ accent = '#4cc2ff' }: { accent?: string }) {
 
 /* ---------------------------------------------------------- le mur et le sol */
 
-export function Room({ accent = '#4cc2ff' }: { accent?: string }) {
-  /* Panneaux acoustiques à lattes derrière le bureau : donnent de la
-     profondeur au mur sans attirer l'œil. */
+export function Room({ accent = '#e8956b' }: { accent?: string }) {
+  /* Mur couleur argile, lattes en chêne miel, parquet chaud : des teintes
+     moyennes, pour que la lumière tamisée révèle les couleurs au lieu de
+     tout noyer dans le noir. */
   const slats = useMemo(() => Array.from({ length: 34 }, (_, i) => -1.65 + i * 0.1), []);
   return (
     <group>
       <mesh position={[0, 1.6, -1.36]} receiveShadow>
         <planeGeometry args={[10, 5]} />
-        <meshStandardMaterial color="#12161e" roughness={1} />
+        <meshStandardMaterial color="#a8897a" roughness={1} />
       </mesh>
       <group position={[0, 1.25, -1.34]}>
         <mesh receiveShadow>
           <planeGeometry args={[3.45, 2.5]} />
-          <meshStandardMaterial color="#0d1016" roughness={1} />
+          <meshStandardMaterial color="#3b2b22" roughness={1} />
         </mesh>
         {slats.map((x) => (
           <mesh key={x} position={[x, 0, 0.012]} receiveShadow castShadow>
             <boxGeometry args={[0.055, 2.5, 0.024]} />
-            <meshStandardMaterial color="#2a2018" roughness={0.8} />
+            <meshStandardMaterial color="#b0875c" roughness={0.75} />
           </mesh>
         ))}
       </group>
       <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
         <planeGeometry args={[10, 8]} />
-        <meshStandardMaterial color="#0b0e15" roughness={0.95} />
+        <meshStandardMaterial color="#5a4031" roughness={0.9} />
       </mesh>
-      {/* halo coloré derrière l'écran */}
+      {/* plafond : en portrait, la caméra s'ouvre assez pour voir au-dessus du
+          mur ; sans lui, une bande noire apparaîtrait en haut de l'écran */}
+      <mesh position={[0, 3.3, 1.2]} rotation={[Math.PI / 2, 0, 0]}>
+        <planeGeometry args={[10, 5.2]} />
+        <meshStandardMaterial color="#4a362b" roughness={1} />
+      </mesh>
+      {/* halo chaud derrière l'écran */}
       <mesh position={[0, 1.3, -1.31]}>
-        <circleGeometry args={[1.2, 48]} />
-        <meshBasicMaterial color={accent} transparent opacity={0.07} toneMapped={false} depthWrite={false} />
+        <circleGeometry args={[1.25, 48]} />
+        <meshBasicMaterial color={accent} transparent opacity={0.05} toneMapped={false} depthWrite={false} />
       </mesh>
     </group>
   );

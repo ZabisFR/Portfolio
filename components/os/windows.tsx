@@ -30,7 +30,7 @@ export function AboutWin({ openWin, lang }: Ctx) {
       </div>
       {INTRO.map((p, i) => <p key={i}>{p[lang]}</p>)}
 
-      <h3 className="h3">{en ? 'System information' : 'Informations système'}</h3>
+      <h3 className="h3">{en ? 'At a glance' : 'En bref'}</h3>
       <dl className="spec">
         {SPECS.map((s, i) => <div key={i} className="spec-row"><dt>{s.k[lang]}</dt><dd>{s.v[lang]}</dd></div>)}
       </dl>
@@ -383,10 +383,18 @@ export function LegalContent({ tab, lang }: { tab: 'legal' | 'privacy' | 'credit
 /*  Visionneuse                                                            */
 /* ======================================================================= */
 
-export function ViewerWin({ payload }: { payload?: ViewerPayload }) {
+export function ViewerWin({ payload, lang = 'fr' }: { payload?: ViewerPayload; lang?: Lang }) {
   if (!payload) return null;
+  const en = lang === 'en';
   return (
     <div className="viewer">
+      <div className="viewer-bar">
+        <span>{payload.name}</span>
+        <div>
+          <a className="btn btn-xs" href={payload.src} target="_blank" rel="noopener"><Icon name="external" size={15} />{en ? 'Open in a tab' : 'Ouvrir dans un onglet'}</a>
+          <a className="btn btn-primary btn-xs" href={payload.src} download><Icon name="download" size={15} />{en ? 'Download' : 'Télécharger'}</a>
+        </div>
+      </div>
       {payload.kind === 'image'
         ? <img src={payload.src} alt={payload.name} />
         : <iframe src={payload.src} title={payload.name} />}

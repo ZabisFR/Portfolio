@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { Inter, Cascadia_Code } from 'next/font/google';
+import { Inter, Cascadia_Code, Caveat } from 'next/font/google';
 import './globals.css';
 import { SITE } from '@/content/site';
 
@@ -7,7 +7,12 @@ import { SITE } from '@/content/site';
    vers Google au chargement de la page (la mention dans la politique de
    confidentialité est mise à jour en conséquence). */
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap' });
-const cascadia = Cascadia_Code({ subsets: ['latin'], variable: '--font-cascadia', display: 'swap' });
+/* Polices secondaires non préchargées : la chasse fixe ne sert qu'au terminal
+   et aux étiquettes techniques, la manuscrite qu'au post-it. Elles ne sont
+   téléchargées que si un texte les utilise réellement. */
+const cascadia = Cascadia_Code({ subsets: ['latin'], variable: '--font-cascadia', display: 'swap', preload: false });
+/* écriture manuscrite du post-it posé sur le bureau */
+const caveat = Caveat({ subsets: ['latin'], variable: '--font-caveat', display: 'swap', weight: ['500', '700'], preload: false });
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
@@ -29,7 +34,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: '#080c14',
+  themeColor: '#15100e',
   width: 'device-width',
   initialScale: 1,
   viewportFit: 'cover',
@@ -37,7 +42,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr" data-theme="dark" className={`${inter.variable} ${cascadia.variable}`} suppressHydrationWarning>
+    <html lang="fr" data-theme="dark" className={`${inter.variable} ${cascadia.variable} ${caveat.variable}`} suppressHydrationWarning>
       <body>{children}</body>
     </html>
   );

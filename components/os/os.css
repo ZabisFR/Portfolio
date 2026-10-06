@@ -417,6 +417,7 @@ code { font-family: var(--mono); font-size: .88em; background: var(--surface-3);
 .tb-back:hover svg { transform: translateX(-3px); }
 @media (max-width: 1180px) { .tb-back span { display: none; } .tb-back { padding: 0 10px; } }
 .m-back { display: none; }
+.on-phone { display: none; }
 .tb-start, .tb-task, .tb-tray, .tb-clock { background: none; border: 0; border-radius: 6px; cursor: pointer; color: var(--text); display: flex; align-items: center; justify-content: center; gap: 8px; font: inherit; transition: background .14s; }
 .tb-start { width: 44px; height: 40px; }
 .tb-start:hover, .tb-task:hover, .tb-tray:hover, .tb-clock:hover, .tb-start[aria-expanded="true"] { background: var(--surface-3); }
@@ -512,6 +513,20 @@ code { font-family: var(--mono); font-size: .88em; background: var(--surface-3);
   .home-bar { display: block; position: fixed; left: 0; right: 0; z-index: 8700; bottom: calc(env(safe-area-inset-bottom) + 6px); text-align: center; pointer-events: none; }
   .home-bar button { pointer-events: auto; width: 136px; height: 5px; border-radius: 99px; border: 0; background: var(--text); opacity: .4; cursor: pointer; }
   .os-window { inset: calc(34px + env(safe-area-inset-top)) 0 0 0 !important; width: auto !important; height: auto !important; border-radius: 16px 16px 0 0; border-width: 1px 0 0; animation: sheetIn .3s var(--ease); transform: none !important; }
+  /* Fond plein : sur téléphone le flou d'arrière-plan n'est pas appliqué à
+     ces feuilles plein écran, on lisait le bureau au travers. */
+  .os-window { background: var(--win-solid); backdrop-filter: none; -webkit-backdrop-filter: none; }
+  .os-window:has(.term) { background: rgb(9, 12, 20); }
+  .on-desk { display: none; }
+  .on-phone { display: inline; }
+  .welcome-hero { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .welcome-avatar { width: 64px; height: 64px; }
+  .welcome-hi { font-size: 1.35rem; }
+  /* cibles tactiles d'au moins 40 px */
+  .w-actions .btn { min-height: 40px; }
+  .carousel-dots { gap: 0; bottom: 8px; }
+  .carousel-dots button { width: 23px; height: 23px; padding: 8px; background-clip: content-box; }
+  .carousel-dots button.is-on { width: 40px; }
   @keyframes sheetIn { from { transform: translateY(100%) } }
   .win-head { height: 48px; cursor: default; }
   .win-btn.min, .win-btn.max { display: none; }

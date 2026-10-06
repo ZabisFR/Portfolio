@@ -145,7 +145,21 @@ body {
 .note-arrow { margin-top: 2px; overflow: visible; filter: drop-shadow(0 2px 4px rgba(0, 0, 0, .6)); }
 .note-arrow path { fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
 .note-screen .note-arrow { animation: nudge 1.6s ease-in-out infinite; }
+/* sous l'écran : la flèche remonte vers lui */
+.note-screen.is-below .note-arrow { rotate: 180deg; margin: 0 0 2px; }
 @keyframes nudge { 50% { translate: 0 5px; } }
+/* Téléphone en paysage : peu de hauteur, le titre se fait compact et les
+   annotations d'étagère (qui sortiraient par le haut) s'effacent. */
+@media (max-height: 520px) {
+  .scene-title { padding: 8px 16px 40px; }
+  .scene-title h1 { font-size: 1.7rem; }
+  .scene-title p { font-size: .82rem; margin-top: 4px; }
+  .scene-badge { margin-top: 6px; font-size: .72rem; padding: 3px 10px 3px 8px; }
+  .scene-ui { padding: 30px 16px calc(12px + env(safe-area-inset-bottom)); }
+  .scene-actions .btn { padding: 8px 14px; font-size: .82rem; }
+  .note-shelf { display: none; }
+  .loader-bar { margin-top: 20px; }
+}
 @media (max-width: 640px) {
   .note-sub { display: none; }
   .note-title { font-size: 1.5rem; }

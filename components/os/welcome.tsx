@@ -22,10 +22,24 @@ export const DOORS: { id: string; icon: IconName; title: { fr: string; en: strin
 
 export function WelcomeWin({ openWin, lang }: { openWin: Go; lang: Lang }) {
   const en = lang === 'en';
-  const steps: { icon: IconName; text: string }[] = [
-    { icon: 'apps', text: en ? 'Click an icon on the left to open a window.' : 'Cliquez sur une icône à gauche pour ouvrir une fenêtre.' },
-    { icon: 'reset', text: en ? 'Close it with the cross ✕ in its top-right corner.' : 'Fermez-la avec la croix ✕ en haut à droite.' },
-    { icon: 'layers', text: en ? 'Find your open windows again in the bar at the bottom of the screen.' : 'Retrouvez vos fenêtres ouvertes dans la barre en bas de l’écran.' },
+  /* Deux versions : sur téléphone, pas d'icônes « à gauche » ni de barre
+     des tâches. La bonne s'affiche selon l'écran (classes .on-desk / .on-phone). */
+  const steps: { icon: IconName; desk: string; phone: string }[] = [
+    {
+      icon: 'apps',
+      desk: en ? 'Click an icon on the left to open a window.' : 'Cliquez sur une icône à gauche pour ouvrir une fenêtre.',
+      phone: en ? 'Tap an icon to open a window.' : 'Touchez une icône pour ouvrir une fenêtre.',
+    },
+    {
+      icon: 'reset',
+      desk: en ? 'Close it with the cross ✕ in its top-right corner.' : 'Fermez-la avec la croix ✕ en haut à droite.',
+      phone: en ? 'Close it with the cross ✕ in its top-right corner.' : 'Fermez-la avec la croix ✕ en haut à droite.',
+    },
+    {
+      icon: 'layers',
+      desk: en ? 'Find your open windows again in the bar at the bottom of the screen.' : 'Retrouvez vos fenêtres ouvertes dans la barre en bas de l’écran.',
+      phone: en ? 'Tap the line at the bottom of the screen to close everything.' : 'Touchez le trait en bas de l’écran pour tout refermer.',
+    },
   ];
 
   return (
@@ -58,7 +72,7 @@ export function WelcomeWin({ openWin, lang }: { openWin: Go; lang: Lang }) {
       <h3 className="h3">{en ? 'How it works' : 'Comment ça marche'}</h3>
       <ol className="steps">
         {steps.map((s, i) => (
-          <li key={i}><span className="step-n">{i + 1}</span><Icon name={s.icon} size={18} /><span>{s.text}</span></li>
+          <li key={i}><span className="step-n">{i + 1}</span><Icon name={s.icon} size={18} /><span className="on-desk">{s.desk}</span><span className="on-phone">{s.phone}</span></li>
         ))}
       </ol>
 

@@ -224,6 +224,9 @@ export default function DeskScene(props: Props) {
      quoi faire : « cliquez sur l'écran », « mes projets ». Elles s'effacent
      dès que la caméra plonge. */
   const idle = (p: THREE.Vector3) => (modeRef.current === 'idle' ? p : null);
+  /* Écran en portrait, ou trop bas (téléphone en paysage) : le titre occupe
+     le haut, l'annotation de l'écran passe dessous. */
+  const portrait = (cam: THREE.Camera) => (cam as THREE.PerspectiveCamera).aspect < 0.8 || innerHeight < 520;
   const anchors = useRef<Anchor[]>([
     {
       id: 'shelf',
@@ -234,7 +237,10 @@ export default function DeskScene(props: Props) {
         return tmp.setY(tmp.y + 0.36);
       },
     },
-    { id: 'note-screen', point: () => idle(new THREE.Vector3(SCREEN.center.x, SCREEN.center.y + SCREEN.height / 2 + 0.035, SCREEN.center.z)) },
+    /* Au-dessus de l'écran ; sur téléphone, en dessous : au-dessus, elle
+       chevauchait les cadres des étagères ou le titre. */
+    { id: 'note-screen', point: (cam) => (portrait(cam) ? null : idle(new THREE.Vector3(SCREEN.center.x, SCREEN.center.y + SCREEN.height / 2 + 0.035, SCREEN.center.z))) },
+    { id: 'note-screen-below', align: 'below', point: (cam) => (portrait(cam) ? idle(new THREE.Vector3(SCREEN.center.x, SCREEN.center.y - SCREEN.height / 2 - 0.02, SCREEN.center.z)) : null) },
     { id: 'note-shelf-l', point: () => idle(new THREE.Vector3(-SHELF_X, SHELF_Y + 0.36, SHELF_Z)) },
     { id: 'note-shelf-r', point: () => idle(new THREE.Vector3(SHELF_X, SHELF_Y + 0.36, SHELF_Z)) },
   ]);
@@ -303,6 +309,13 @@ export default function DeskScene(props: Props) {
           <span className="hint-touch">{en ? 'Tap the screen to enter' : 'Touchez l’écran pour entrer'}</span>
         </span>
         <HandArrow />
+      </div>
+      <div ref={reg('note-screen-below')} className="scene-note note-screen is-below" aria-hidden="true" style={NOTE_STYLE}>
+        <HandArrow />
+        <span className="note-text">
+          <span className="hint-fine">{en ? 'Click the screen to enter' : 'Cliquez sur l’écran pour entrer'}</span>
+          <span className="hint-touch">{en ? 'Tap the screen to enter' : 'Touchez l’écran pour entrer'}</span>
+        </span>
       </div>
       {(['l', 'r'] as const).map((side) => (
         <div key={side} ref={reg(`note-shelf-${side}`)} className={`scene-note note-shelf${hovered ? ' is-dim' : ''}`} aria-hidden="true" style={NOTE_STYLE}>

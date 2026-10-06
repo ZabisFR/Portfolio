@@ -1,124 +1,89 @@
 # EvanOS — portfolio d'Evan Pouteau
 
-Un bureau en 3D : la caméra part d'une pièce vue de loin, plonge dans l'écran
-du moniteur, et l'on se retrouve dans un système d'exploitation complet —
-fenêtres en relief, barre des tâches, menu Démarrer, terminal, et une galerie
-où l'on choisit un projet dans un carrousel 3D.
+Un portfolio qui se visite comme un bureau. On arrive dans une pièce en 3D,
+la caméra plonge dans l'écran de l'ordinateur, et l'on se retrouve sur un
+système d'exploitation : on y ouvre des fenêtres pour parcourir mes projets,
+mon parcours et mon CV.
 
-**Stack** : Next.js 16 (App Router) · React 19 · TypeScript · Three.js via
-React Three Fiber et drei. Tout le mobilier 3D est généré par du code : aucun
-modèle importé.
+**[evanpouteau.vercel.app](https://evanpouteau.vercel.app)**
 
-## Démarrer
+![La pièce 3D d'accueil : un bureau éclairé à la lampe, des plantes et une étagère de projets](docs/images/scene-3d.webp)
+
+Étudiant en 2ᵉ année de BUT MMI (parcours Développement) à l'IUT Clermont
+Auvergne, je cherche un **stage en développement web du 12 avril au
+18 juin 2027**. [LinkedIn](https://www.linkedin.com/in/evan-pouteau-06a9a7342)
+
+## Ce qu'on y trouve
+
+| | |
+|---|---|
+| ![Le bureau et sa fenêtre de bienvenue](docs/images/bureau.webp) | ![Le carrousel 3D des projets](docs/images/galerie-3d.webp) |
+| **Un bureau lisible par tous** : une fenêtre de bienvenue explique où cliquer, pas besoin de connaître la métaphore Windows. | **Une galerie 3D** : les projets défilent dans un carrousel, au clavier, à la souris ou au doigt. |
+
+- **Huit projets**, dont deux applications Next.js + Supabase en production :
+  une app pour apprendre l'arabe égyptien et une app de suivi de musculation.
+- **Un vrai gestionnaire de fenêtres** : déplacer, redimensionner, aimanter
+  aux bords, Alt+Tab, menu Démarrer avec recherche, thème clair ou sombre,
+  français ou anglais.
+- **Un terminal** pour les curieux (`help`, `projets`, `open muscu`…).
+- **Une page classique par projet** (`/projets/<nom>`), lisible sans 3D et
+  référencée par les moteurs de recherche.
+- **Accessible** : la 3D se saute d'une touche, et elle n'est pas chargée du
+  tout si le système demande moins d'animations ou ne gère pas WebGL.
+
+## Stack
+
+- **Next.js 16** (App Router, pages statiques) · **React 19** · **TypeScript**
+- **Three.js** avec **React Three Fiber** et **drei**
+- **Tailwind CSS 4** · polices auto-hébergées · déploiement sur **Vercel**
+
+Toute la pièce est générée par du code : meubles, plantes, guirlande et
+matières (bois, feutre, tapis) sont construits dans le navigateur, sans aucun
+modèle 3D importé.
+
+## Quelques choix techniques
+
+- **Shaders compilés avant la première image.** Au premier affichage, la
+  carte graphique compilait 53 shaders en bloquant la page jusqu'à 5 s. Ils
+  sont désormais compilés en parallèle (`compileAsync`) pendant que la page
+  reste utilisable, puis la pièce apparaît en fondu. Résultat mesuré sur un
+  premier chargement : la pièce est visible en 1,8 s au lieu de 4,5 s, et la
+  page ne gèle plus ([`warmup.tsx`](components/three/warmup.tsx)).
+- **Ombres figées après le chargement.** Rien ne bouge vraiment dans la
+  pièce : les ombres sont calculées une fois puis gelées. La scène tient
+  60 images par seconde sur une carte graphique intégrée.
+- **Éclairage d'environnement fait maison**
+  ([`studio-env.tsx`](components/three/studio-env.tsx)) plutôt que celui de
+  drei, qui embarquait environ 100 Ko de chargeurs d'images HDR inutiles.
+- **Étiquettes 3D en HTML ordinaire**, projetées à chaque image
+  ([`projected-labels.tsx`](components/three/projected-labels.tsx)) : le
+  composant `<Html>` de drei plantait sous React 19.
+- **Une seule source de contenu** : chaque projet est décrit une fois dans
+  [`content/projects.ts`](content/projects.ts), et l'étagère, le carrousel,
+  l'explorateur, le terminal et les pages publiques s'en nourrissent.
+
+## Lancer le projet
 
 ```bash
 npm install
-npm run dev -- -p 3022   # http://localhost:3022 (3000 et 3010 sont pris par l'app d'arabe et Muscu)
+npm run dev        # http://localhost:3000
 npm run build      # build de production
 npm run lint       # vérification des types
 ```
 
-## Structure
+## Organisation
 
 ```
-app/
-  page.tsx                  Accueil : scène 3D puis OS (entièrement statique)
-  projets/[slug]/page.tsx   Une page indexable par projet — c'est elle que Google référence
-  mentions-legales/         Mentions légales, confidentialité, crédits
-  sitemap.ts, robots.ts, manifest.ts
-content/
-  projects.ts               LES PROJETS — le seul fichier à toucher pour en ajouter un
-  site.ts                   Profil : formation, expériences, compétences, CV
+app/              Pages : accueil, /projets/<nom>, mentions légales, sitemap
+content/          Les projets et le profil (formation, expériences, compétences)
 components/
-  home.tsx                  Orchestration scène 3D ⇄ OS
-  os/                       Le système : gestionnaire de fenêtres, fenêtres, terminal, galerie
-  three/                    Les scènes : bureau, étagères, carrousel, matières procédurales
-public/assets/
-  covers/                   Couverture 1600×1000 de chaque projet (+ covers/3d/ en 1024 px)
-  shots/                    Captures d'écran des applications
-  screen/os-desktop.webp    Capture du bureau affichée sur le moniteur 3D (à refaire si le bureau change)
-  wallpaper/leaves.svg      Feuillage du fond d'écran (généré par tools/build-wallpaper.mjs)
-  docs/                     CV et documents de projet
-legacy/                     L'ancienne version statique, gardée pour mémoire (non déployée)
+  home.tsx        Passage de la scène 3D au bureau
+  os/             Le système : fenêtres, barre des tâches, terminal, galerie
+  three/          Les scènes 3D : pièce, étagères, carrousel, matières
+public/assets/    Couvertures, captures, CV
+tools/            Scripts de génération (fond d'écran, CV)
+legacy/           L'ancienne version statique du portfolio, gardée pour mémoire
 ```
 
-## Tâches courantes
-
-**Ajouter un projet** — un objet dans `content/projects.ts`, plus sa couverture
-dans `public/assets/covers/<slug>.webp` (1600×1000) et sa version 3D dans
-`public/assets/covers/3d/<slug>.webp` (1024×640). La page indexable, l'explorateur,
-l'étagère, le carrousel, le menu Démarrer et le terminal suivent tout seuls.
-
-**Modifier les textes personnels du bureau** — la phrase d'accueil, le widget
-« En ce moment » et le post-it sont dans `content/site.ts` (`GREETING`, `PITCH`,
-`NOW`, `STICKY_NOTE`).
-
-**Mettre à jour le CV** — remplacer `public/assets/docs/CV-Evan-Pouteau-FR.pdf`
-ou `-EN.pdf` en gardant le nom exact. Le site sert la version qui correspond à
-la langue de l'interface.
-
-**Mettre à jour une couverture ou la capture du moniteur** — remplacer le
-fichier sous le même nom. Les ressources sont mises en cache un jour : un
-visiteur régulier peut voir l'ancienne version jusqu'au lendemain.
-
-## Déploiement
-
-```bash
-npx vercel --scope zabis          # preview, ne touche pas la production
-npx vercel --prod --scope zabis   # production
-```
-
-Les en-têtes de sécurité sont dans `next.config.ts`. `vercel.json` force le
-framework Next.js (le projet Vercel a été créé à l'époque du site statique).
-
-## Choix à ne pas défaire sans raison
-
-- **La 3D ne bloque jamais l'accès au contenu.** Elle se saute, se souvient
-  d'avoir été vue pendant la session, et n'est pas chargée du tout si le
-  système demande moins d'animations ou ne sait pas faire de WebGL. Chaque
-  projet existe aussi comme page classique, lisible sans WebGL.
-- **Pas de `<Html>` de drei** : il crée une racine React par étiquette et
-  plante sous React 19 en mode strict. Les étiquettes 3D passent par
-  `components/three/projected-labels.tsx`.
-- **Pas d'`<Environment>` de drei** : il embarque des chargeurs HDR inutiles.
-  L'éclairage d'environnement est construit par `components/three/studio-env.tsx`.
-- **Shaders compilés avant la première image** (`components/three/warmup.tsx`) :
-  le `<Canvas>` reste en `frameloop="never"` pendant que `compileAsync` compile
-  tout en parallèle, puis la pièce apparaît en fondu. Sans cela, la première
-  image gelait la page 3 à 5 s. Pour garder ce gain :
-  - toute nouvelle scène 3D passe par `useWarmup()` + `<Warmup>` ;
-  - pas de `meshPhysicalMaterial` (vernis, verre) : deux fois plus long à
-    compiler que `meshStandardMaterial`, pour une différence invisible ici ;
-  - chaque combinaison de réglages d'un matériau (carte, rugosité, instances…)
-    est un shader de plus : réutiliser les mêmes réglages quand c'est possible ;
-  - mesurer avec un navigateur neuf (cache de shaders vide) : c'est ce que vit
-    un visiteur qui découvre le site.
-- **Ombres figées** (`StaticShadows` dans `desk-scene.tsx`) : calculées sur
-  les trois premières images puis gelées. Les recalculer à chaque image
-  faisait tomber la scène de 60 à 30 images/seconde sur une carte graphique
-  intégrée.
-- **Polices secondaires non préchargées** (`app/layout.tsx`) : la manuscrite et
-  la chasse fixe ne se téléchargent que si un texte les utilise.
-- **Fenêtres opaques en mode relief** : Chrome n'applique pas `backdrop-filter`
-  aux éléments placés en 3D, on lirait sinon le texte des fenêtres de derrière.
-
-## Poids mesuré (build de production)
-
-| Parcours | Transféré |
-|---|---|
-| Accueil avec scène 3D | ≈ 725 Ko |
-| OS + galerie 3D | ≈ 885 Ko |
-| OS sans 3D | ≈ 380 Ko |
-| Page projet | ≈ 325 Ko |
-
-Fluidité mesurée sur une carte graphique Intel intégrée : 60 images/seconde
-(30 sur batterie, Windows bridant alors la carte graphique).
-
-Temps d'apparition de la pièce 3D, premier chargement, même PC :
-≈ 1,8 s sur fibre, ≈ 3,7 s en 4G avec un processeur 4 fois plus lent
-(simulation d'un mobile moyen). Avant le préchauffage des shaders : 4,5 s et 7,2 s.
-
-## À compléter
-
-- `public/assets/docs/projet-fillia-etude-ux.pdf` pèse 19 Mo ; une version
-  compressée serait préférable.
+Les notes pour faire évoluer le site (ajouter un projet, déployer, pièges à
+éviter) sont dans [`docs/MAINTENANCE.md`](docs/MAINTENANCE.md).

@@ -92,7 +92,7 @@ function Ring({ target, onTarget, onOpen }: Props) {
   const drag = useRef<{ x: number; start: number; moved: boolean } | null>(null);
   /* Le clic qui suit un glisser ne doit ni ouvrir ni faire tourner. */
   const justDragged = useRef(false);
-  const { gl, camera, pointer } = useThree();
+  const { gl, camera } = useThree();
   const reduce = useMemo(() => typeof window !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches, []);
 
   /* Glisser pour tourner : on suit le doigt en direct, puis on s'aimante sur
@@ -146,9 +146,8 @@ function Ring({ target, onTarget, onOpen }: Props) {
     const halfTan = Math.tan(THREE.MathUtils.degToRad(cam.fov / 2));
     const dist = Math.max(3.1, (CARD_W * 1.1 * 1.3) / (2 * halfTan * cam.aspect));
     camera.position.z += (RADIUS + dist - camera.position.z) * 0.08;
-    /* légère parallaxe de la caméra selon le pointeur */
-    camera.position.x += (pointer.x * 0.35 - camera.position.x) * 0.04;
-    camera.position.y += (0.45 + pointer.y * 0.18 - camera.position.y) * 0.04;
+    camera.position.x += (0 - camera.position.x) * 0.04;
+    camera.position.y += (0.45 - camera.position.y) * 0.04;
     camera.lookAt(0, 0.05, RADIUS - 1);
   });
 

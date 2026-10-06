@@ -61,7 +61,7 @@ function CameraRig({
   onProgress: (t: number) => void;
   onDone: (mode: SceneMode) => void;
 }) {
-  const { camera, pointer } = useThree();
+  const { camera } = useThree();
   const t = useRef(mode === 'exit' ? 1 : 0);
   const look = useRef(START_LOOK.clone());
   const doneFor = useRef<SceneMode | null>(null);
@@ -75,11 +75,8 @@ function CameraRig({
 
     const k = ease(t.current);
 
-    /* Au repos, la caméra suit légèrement le pointeur : la scène respire. */
-    const sway = (1 - k) * 0.22;
-    const swayPos = new THREE.Vector3(pointer.x * sway, pointer.y * sway * 0.5, 0);
-
-    camera.position.lerpVectors(START_POS, END_POS, k).add(swayPos);
+    /* Caméra fixe au repos : elle ne suit pas le pointeur. */
+    camera.position.lerpVectors(START_POS, END_POS, k);
     look.current.lerpVectors(START_LOOK, END_LOOK, k);
     camera.lookAt(look.current);
 

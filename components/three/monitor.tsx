@@ -4,7 +4,8 @@
    plongée de la caméra, l'image se confond avec le bureau qui apparaît
    ensuite, ce qui rend la transition presque continue. */
 
-import { useMemo } from 'react';
+import { useMemo, useRef } from 'react';
+import { useFrame } from '@react-three/fiber';
 import { RoundedBox, useTexture } from '@react-three/drei';
 import * as THREE from 'three';
 import { roundedRect } from './materials';
@@ -22,13 +23,23 @@ export function Monitor({
   accent = '#4cc2ff',
   onClick,
   hovered = false,
+  pulse = false,
   onHover,
 }: {
   accent?: string;
   onClick?: () => void;
   hovered?: boolean;
+  /** Le liseré respire doucement pour signaler que l'écran se clique. */
+  pulse?: boolean;
   onHover?: (h: boolean) => void;
 }) {
+  const glowMat = useRef<THREE.MeshBasicMaterial>(null);
+  useFrame((state) => {
+    const m = glowMat.current;
+    if (!m) return;
+    const target = hovered ? 0.75 : pulse ? 0.22 + 0.3 * (0.5 + 0.5 * Math.sin(state.clock.elapsedTime * 2.6)) : 0;
+    m.opacity += (target - m.opacity) * 0.15;
+  });
   const screen = useTexture(SCREEN_URL);
   useMemo(() => {
     screen.colorSpace = THREE.SRGBColorSpace;
@@ -59,9 +70,9 @@ export function Monitor({
         <meshStandardMaterial color="#0f1116" roughness={0.35} metalness={0.4} />
       </RoundedBox>
 
-      {/* liseré d'accentuation au survol */}
+      {/* liseré d'accentuation : respire au repos, s'allume au survol */}
       <mesh geometry={glow} position={[center.x, center.y, center.z - 0.0005]}>
-        <meshBasicMaterial color={accent} transparent opacity={hovered ? 0.65 : 0} toneMapped={false} />
+        <meshBasicMaterial ref={glowMat} color={accent} transparent opacity={0} toneMapped={false} />
       </mesh>
 
       {/* dalle — c'est elle qu'on clique pour entrer */}

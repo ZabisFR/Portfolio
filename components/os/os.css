@@ -404,6 +404,19 @@ code { font-family: var(--mono); font-size: .88em; background: var(--surface-3);
 }
 .tb-center { display: flex; align-items: center; gap: 4px; }
 .tb-right { position: absolute; right: 10px; display: flex; align-items: center; gap: 4px; }
+/* Retour à la pièce 3D : bien visible, à gauche, comme un bouton « précédent » */
+.tb-left { position: absolute; left: 10px; display: flex; align-items: center; }
+.tb-back {
+  height: 36px; padding: 0 14px 0 11px; display: flex; align-items: center; gap: 8px;
+  border-radius: 8px; border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+  background: color-mix(in srgb, var(--accent) 14%, transparent); color: var(--text);
+  font: 600 .8rem var(--sans); cursor: pointer; transition: background .14s, border-color .14s;
+}
+.tb-back svg { color: var(--accent-text); transition: transform .2s var(--ease); }
+.tb-back:hover { background: color-mix(in srgb, var(--accent) 24%, transparent); border-color: var(--accent); }
+.tb-back:hover svg { transform: translateX(-3px); }
+@media (max-width: 1180px) { .tb-back span { display: none; } .tb-back { padding: 0 10px; } }
+.m-back { display: none; }
 .tb-start, .tb-task, .tb-tray, .tb-clock { background: none; border: 0; border-radius: 6px; cursor: pointer; color: var(--text); display: flex; align-items: center; justify-content: center; gap: 8px; font: inherit; transition: background .14s; }
 .tb-start { width: 44px; height: 40px; }
 .tb-start:hover, .tb-task:hover, .tb-tray:hover, .tb-clock:hover, .tb-start[aria-expanded="true"] { background: var(--surface-3); }
@@ -476,6 +489,14 @@ code { font-family: var(--mono); font-size: .88em; background: var(--surface-3);
   .sb-batt { width: 22px; height: 11px; border: 1.4px solid currentColor; border-radius: 3px; position: relative; }
   .sb-batt::before { content: ""; position: absolute; inset: 1.5px; right: 5px; background: currentColor; border-radius: 1px; }
   .taskbar { display: none; }
+  .m-back {
+    display: inline-flex; align-self: flex-start; align-items: center; gap: 7px; order: -2;
+    padding: 8px 14px 8px 11px; border-radius: 99px;
+    border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+    background: color-mix(in srgb, var(--accent) 14%, transparent);
+    color: var(--text); font: 600 .82rem var(--sans); cursor: pointer;
+  }
+  .m-back svg { color: var(--accent-text); }
   .desktop { inset: calc(40px + env(safe-area-inset-top)) 0 0 0; overflow-y: auto; padding: 8px 14px 90px; display: flex; flex-direction: column; gap: 16px; }
   /* les widgets deviennent des éléments du flux : profil en haut, « En ce
      moment » sous les icônes, pour ne pas repousser la navigation */

@@ -25,6 +25,8 @@ export function useWarmup() {
   const onCompiled = useCallback(() => setCompiled(true), []);
   return {
     live: compiled && env === 2,
+    /** La scène est montée (images chargées) : il ne reste qu'à compiler. */
+    mounted: env >= 1,
     env: { onPlaceholder, onReady },
     warmup: { when: env >= 1, onReady: onCompiled },
   };

@@ -35,6 +35,7 @@ const PATHS = {
   tool: <path d="M14.7 6.3a4 4 0 0 0-5.2 5.2l-6.2 6.2a1.8 1.8 0 0 0 2.5 2.5l6.2-6.2a4 4 0 0 0 5.2-5.2l-2.6 2.6-2.5-.4-.4-2.5z" />,
   leaf: <><path d="M5 19c0-8 5-14 15-14 0 10-6 15-14 15" /><path d="M5 19c3-4 6-7 10-9" /></>,
   arrow: <path d="M5 12h14m-5-5 5 5-5 5" />,
+  back: <path d="M19 12H5m5-5-5 5 5 5" />,
 } as const;
 
 export type IconName = keyof typeof PATHS;

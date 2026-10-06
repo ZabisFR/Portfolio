@@ -69,6 +69,9 @@ export default function Home() {
   const [pending, setPending] = useState<string | undefined>(undefined);
   const [initialWindow, setInitialWindow] = useState<string | undefined>(undefined);
   const flash = useRef<HTMLDivElement>(null);
+  /* Avancement du chargement de la pièce, pour l'écran de chargement. */
+  const [load, setLoad] = useState(0);
+  const onLoad = useCallback((p: number) => setLoad((l) => Math.max(l, p)), []);
 
   /* Choix de la phase de départ, côté client uniquement. */
   useEffect(() => {
@@ -80,6 +83,11 @@ export default function Home() {
   }, []);
 
   const enter = useCallback(() => setPhase((p) => (p === 'scene' ? 'entering' : p)), []);
+  /* « Passer » depuis l'écran de chargement : directement au bureau. */
+  const skip = useCallback(() => {
+    try { sessionStorage.setItem('evanos.entered', '1'); } catch { /* ignore */ }
+    setPhase('os');
+  }, []);
   const exit = useCallback(() => {
     if (!ready3D) return;
     try { sessionStorage.removeItem('evanos.entered'); } catch { /* ignore */ }
@@ -110,7 +118,9 @@ export default function Home() {
     return () => removeEventListener('keydown', onKey);
   }, [phase, enter]);
 
-  if (phase === null) return <div style={{ position: 'fixed', inset: 0, background: 'var(--bg)' }} />;
+  /* Avant l'hydratation : l'écran de chargement est déjà dans le HTML, le
+     visiteur voit tout de suite qu'il se passe quelque chose. */
+  if (phase === null) return <Loader progress={0} lang={lang} />;
 
   const sceneMounted = ready3D && phase !== 'os';
   const mode: SceneMode = phase === 'entering' ? 'enter' : phase === 'exiting' ? 'exit' : 'idle';
@@ -132,27 +142,19 @@ export default function Home() {
             onOpenProject={(slug) => { setPending(`project:${slug}`); enter(); }}
             onProgress={onProgress}
             onDone={onDone}
+            onLoad={onLoad}
           />
           <div ref={flash} className="scene-flash" aria-hidden="true" />
+          {phase !== 'exiting' && <Loader progress={load} lang={lang} onSkip={skip} />}
 
           {phase === 'scene' && (
             <>
-              <p className="scene-hint">
-                <span className="hint-fine">
-                  {lang === 'en'
-                    ? 'Click the screen to enter · hover the framed photos to preview a project'
-                    : 'Cliquez sur l’écran pour entrer · survolez les cadres pour voir un projet'}
-                </span>
-                <span className="hint-touch">
-                  {lang === 'en' ? 'Tap the screen or a framed photo' : 'Touchez l’écran ou un cadre'}
-                </span>
-              </p>
+              <header className="scene-title">
+                <h1>Evan <em>Pouteau</em></h1>
+                <p>{ROLE[lang]}</p>
+                <span className="scene-badge"><i />{AVAILABILITY[lang]}</span>
+              </header>
               <div className="scene-ui">
-                <div className="scene-title">
-                  <h1>Evan <em>Pouteau</em></h1>
-                  <p>{ROLE[lang]}</p>
-                  <span className="scene-badge"><i />{AVAILABILITY[lang]}</span>
-                </div>
                 <div className="scene-actions">
                   <button className="btn btn-primary" onClick={enter} autoFocus>
                     {lang === 'en' ? 'Enter the desktop' : 'Entrer dans le bureau'}
@@ -170,5 +172,51 @@ export default function Home() {
         </div>
       )}
     </>
+  );
+}
+
+/* ------------------------------------------------------- écran de chargement */
+
+const STEPS = {
+  fr: ['Ouverture de la pièce…', 'Accrochage des projets…', 'Réglage de la lumière…', 'Bienvenue !'],
+  en: ['Opening the room…', 'Hanging the projects…', 'Setting the lights…', 'Welcome!'],
+};
+
+/** Couvre la pièce le temps qu'elle se prépare : sans lui, un recruteur
+ *  pouvait croire le site vide. Il s'efface en fondu une fois la pièce prête
+ *  et reste démonté ensuite (ce n'est pas un écran qu'on revoit). */
+function Loader({ progress, lang, onSkip }: { progress: number; lang: 'fr' | 'en'; onSkip?: () => void }) {
+  const done = progress >= 1;
+  const [gone, setGone] = useState(false);
+  useEffect(() => {
+    if (!done) return;
+    const t = setTimeout(() => setGone(true), 900);
+    return () => clearTimeout(t);
+  }, [done]);
+  if (gone) return null;
+
+  const step = STEPS[lang][done ? 3 : progress >= 0.85 ? 2 : progress >= 0.35 ? 1 : 0];
+  return (
+    <div className={`loader${done ? ' is-done' : ''}`} role="status" aria-live="polite">
+      <div className="loader-in">
+        <p className="loader-name">Evan <em>Pouteau</em></p>
+        <p className="loader-role">{ROLE[lang]}</p>
+        <div className="loader-bar" role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(progress * 100)}
+          aria-label={lang === 'en' ? 'Loading the 3D room' : 'Chargement de la pièce 3D'}>
+          {/* Tant que le code de la scène se télécharge, la barre avance seule
+              jusqu'au tiers : on ne connaît pas encore l'avancement réel. */}
+          <i className={progress === 0 ? 'is-wait' : undefined} style={progress === 0 ? undefined : { transform: `scaleX(${progress})` }} />
+        </div>
+        <p className="loader-step">{step}</p>
+      </div>
+      {onSkip && !done && (
+        <div className="loader-skip">
+          <button onClick={onSkip}>{lang === 'en' ? 'Skip the 3D intro →' : 'Passer l’intro 3D →'}</button>
+          <a href={lang === 'en' ? '/assets/docs/CV-Evan-Pouteau-EN.pdf' : '/assets/docs/CV-Evan-Pouteau-FR.pdf'} download>
+            {lang === 'en' ? 'Download CV' : 'Télécharger le CV'}
+          </a>
+        </div>
+      )}
+    </div>
   );
 }

@@ -5,7 +5,7 @@
 
 import { Suspense, useEffect, useMemo, useRef, useState, type MutableRefObject } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { ContactShadows } from '@react-three/drei';
+import { ContactShadows, useProgress } from '@react-three/drei';
 import { StudioEnv } from './studio-env';
 import { Warmup, useWarmup } from './warmup';
 import * as THREE from 'three';
@@ -13,7 +13,7 @@ import { RectAreaLightUniformsLib } from 'three/examples/jsm/lights/RectAreaLigh
 import { Desk, DeskMat, Keyboard, Mouse, Mug, Lamp, Plant, Notebook, Room } from './desk-parts';
 import { Monstera, FiddleFig, HangingPothos, StringLights, Candle, Rug } from './cozy';
 import { Monitor, SCREEN } from './monitor';
-import { ProjectShelf } from './project-shelf';
+import { ProjectShelf, SHELF_X, SHELF_Y, SHELF_Z } from './project-shelf';
 import { LabelProjector, useLabelRegistry, type Anchor } from './projected-labels';
 import type { Project } from '@/content/projects';
 
@@ -161,6 +161,7 @@ function Scene({
       <Monitor
         accent={accent}
         hovered={screenHover && mode === 'idle'}
+        pulse={mode === 'idle'}
         onHover={setScreenHover}
         onClick={() => mode === 'idle' && onEnterRequest()}
       />
@@ -193,7 +194,21 @@ type Props = {
   onOpenProject: (slug: string) => void;
   onProgress: (t: number) => void;
   onDone: (mode: SceneMode) => void;
+  /** Avancement du chargement, de 0 à 1 (1 = la pièce est visible). */
+  onLoad?: (p: number) => void;
 };
+
+/* Flèche dessinée à la main, pointée vers le bas. */
+function HandArrow({ flip = false }: { flip?: boolean }) {
+  return (
+    <svg className="note-arrow" width="34" height="44" viewBox="0 0 34 44" aria-hidden="true" style={flip ? { transform: 'scaleX(-1)' } : undefined}>
+      <path d="M8 3c9 6 14 15 13 34" />
+      <path d="M13 31l8 8 6-10" />
+    </svg>
+  );
+}
+
+const NOTE_STYLE = { position: 'absolute', left: 0, top: 0, visibility: 'hidden' } as const;
 
 export default function DeskScene(props: Props) {
   const [hoverSlug, setHoverSlug] = useState<string | null>(null);
@@ -205,16 +220,28 @@ export default function DeskScene(props: Props) {
   const modeRef = useRef(props.mode);
   modeRef.current = props.mode;
 
-  /* Une seule étiquette, accrochée au-dessus de l'objet survolé. */
-  const anchors = useRef<Anchor[]>([{
-    id: 'shelf',
-    point: () => {
-      const o = hoverObj.current;
-      if (!o || modeRef.current !== 'idle') return null;
-      o.getWorldPosition(tmp);
-      return tmp.setY(tmp.y + 0.36);
+  /* L'étiquette du cadre survolé, et les annotations manuscrites qui disent
+     quoi faire : « cliquez sur l'écran », « mes projets ». Elles s'effacent
+     dès que la caméra plonge. */
+  const idle = (p: THREE.Vector3) => (modeRef.current === 'idle' ? p : null);
+  const anchors = useRef<Anchor[]>([
+    {
+      id: 'shelf',
+      point: () => {
+        const o = hoverObj.current;
+        if (!o || modeRef.current !== 'idle') return null;
+        o.getWorldPosition(tmp);
+        return tmp.setY(tmp.y + 0.36);
+      },
     },
-  }]);
+    { id: 'note-screen', point: () => idle(new THREE.Vector3(SCREEN.center.x, SCREEN.center.y + SCREEN.height / 2 + 0.035, SCREEN.center.z)) },
+    { id: 'note-shelf-l', point: () => idle(new THREE.Vector3(-SHELF_X, SHELF_Y + 0.36, SHELF_Z)) },
+    { id: 'note-shelf-r', point: () => idle(new THREE.Vector3(SHELF_X, SHELF_Y + 0.36, SHELF_Z)) },
+  ]);
+  const reg = (id: string) => (el: HTMLElement | null) => {
+    if (el) registry.current.set(id, el); else registry.current.delete(id);
+  };
+  const en = props.lang === 'en';
 
   const hovered = props.projects.find((p) => p.slug === hoverSlug);
 
@@ -224,7 +251,13 @@ export default function DeskScene(props: Props) {
      l'OS, lui, attend : l'OS reste visible jusqu'à ce que la pièce soit prête.) */
   const warm = useWarmup();
   const { live } = warm;
-  const { mode, onDone } = props;
+  const { mode, onDone, onLoad } = props;
+
+  /* Pour l'écran de chargement : images (jusqu'à 80 %), puis compilation. */
+  const { progress } = useProgress();
+  useEffect(() => {
+    onLoad?.(live ? 1 : warm.mounted ? 0.85 : 0.35 + 0.45 * (progress / 100));
+  }, [live, warm.mounted, progress, onLoad]);
   useEffect(() => {
     if (!live && mode === 'enter') onDone('enter');
   }, [live, mode, onDone]);
@@ -263,6 +296,25 @@ export default function DeskScene(props: Props) {
           </>
         )}
       </div>
+
+      <div ref={reg('note-screen')} className="scene-note note-screen" aria-hidden="true" style={NOTE_STYLE}>
+        <span className="note-text">
+          <span className="hint-fine">{en ? 'Click the screen to enter' : 'Cliquez sur l’écran pour entrer'}</span>
+          <span className="hint-touch">{en ? 'Tap the screen to enter' : 'Touchez l’écran pour entrer'}</span>
+        </span>
+        <HandArrow />
+      </div>
+      {(['l', 'r'] as const).map((side) => (
+        <div key={side} ref={reg(`note-shelf-${side}`)} className={`scene-note note-shelf${hovered ? ' is-dim' : ''}`} aria-hidden="true" style={NOTE_STYLE}>
+          <span className="note-title">{en ? 'My projects' : 'Mes projets'}</span>
+          <span className="note-sub">
+            {side === 'l'
+              ? (en ? 'hover a frame to preview it' : 'survolez un cadre pour le découvrir')
+              : (en ? 'click it to open the project' : 'cliquez pour ouvrir le projet')}
+          </span>
+          <HandArrow flip={side === 'r'} />
+        </div>
+      ))}
     </>
   );
 }

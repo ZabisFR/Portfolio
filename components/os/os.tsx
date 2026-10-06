@@ -176,6 +176,12 @@ function Desktop({ initialWindow, onBackTo3D }: { initialWindow?: string; onBack
 
       <main className="desktop" aria-label={lang === 'en' ? 'Desktop' : 'Bureau'}>
         <h1 className="sr-only">Evan Pouteau — portfolio</h1>
+        {/* sur mobile, pas de barre des tâches : le retour est en tête du bureau */}
+        {onBackTo3D && (
+          <button className="m-back" onClick={onBackTo3D}>
+            <Icon name="back" size={16} />{lang === 'en' ? 'Back to the 3D room' : 'Retour à la pièce 3D'}
+          </button>
+        )}
         <ul className="desktop-icons">
           {DESKTOP.map((d) => (
             <li key={d.id}>
@@ -250,6 +256,14 @@ function Desktop({ initialWindow, onBackTo3D }: { initialWindow?: string; onBack
 
       {/* ------------------------------------------------- barre des tâches */}
       <footer className="taskbar" style={{ height: TASKBAR }} onClick={(e) => e.stopPropagation()}>
+        {onBackTo3D && (
+          <div className="tb-left">
+            <button className="tb-back" onClick={onBackTo3D} title={lang === 'en' ? 'Back to the 3D room' : 'Retour à la pièce 3D'}
+              aria-label={lang === 'en' ? 'Back to the 3D room' : 'Retour à la pièce 3D'}>
+              <Icon name="back" size={17} /><span>{lang === 'en' ? 'Back to the 3D room' : 'Retour à la pièce 3D'}</span>
+            </button>
+          </div>
+        )}
         <div className="tb-center">
           <button className="tb-start" aria-label={lang === 'en' ? 'Start menu' : 'Menu Démarrer'} aria-expanded={panel === 'start'}
             onClick={() => { sfx.click(); setPanel((p) => (p === 'start' ? null : 'start')); }}>

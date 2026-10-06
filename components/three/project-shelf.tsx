@@ -13,10 +13,10 @@ import { walnut } from './materials';
 import { PhotoFrame, frameSize } from './photo-frame';
 import { preloadCovers, useCovers } from './use-covers';
 
-const SHELF_Y = 1.6;
-const SHELF_Z = -1.17;
+export const SHELF_Y = 1.6;
+export const SHELF_Z = -1.17;
 const SHELF_LEN = 1.5;
-const SHELF_X = 1.72;
+export const SHELF_X = 1.72;
 /* Tailles légèrement différentes : un alignement trop parfait fait décor de magasin. */
 const SIZES = [0.26, 0.21, 0.25, 0.22];
 

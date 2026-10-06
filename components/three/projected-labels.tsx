@@ -14,7 +14,12 @@ import * as THREE from 'three';
 
 /** `point` renvoie la position monde de l'étiquette, ou null pour la masquer.
  *  Il reçoit la caméra, pour pouvoir masquer ce qui est de dos. */
-export type Anchor = { id: string; point: (camera: THREE.Camera) => THREE.Vector3 | null };
+export type Anchor = {
+  id: string;
+  point: (camera: THREE.Camera) => THREE.Vector3 | null;
+  /** Position de l'étiquette par rapport au point : au-dessus (défaut) ou en dessous. */
+  align?: 'above' | 'below';
+};
 
 /** Registre partagé entre la scène (qui projette) et le DOM (qui affiche). */
 export function useLabelRegistry() {
@@ -41,10 +46,14 @@ export function LabelProjector({
       v.current.copy(p).project(camera);
       /* Derrière la caméra : on masque plutôt que d'afficher une étiquette inversée. */
       if (v.current.z > 1) { el.style.visibility = 'hidden'; continue; }
-      const x = (v.current.x * 0.5 + 0.5) * size.width;
+      /* Gardée dans l'écran : sur un téléphone, les étagères touchent les
+         bords et leurs annotations auraient été coupées. */
+      const half = el.offsetWidth / 2 + 8;
+      const x = Math.min(Math.max((v.current.x * 0.5 + 0.5) * size.width, half), size.width - half);
       const y = (-v.current.y * 0.5 + 0.5) * size.height;
       el.style.visibility = '';
-      el.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0) translate(-50%, -100%)`;
+      const ty = a.align === 'below' ? '0' : '-100%';
+      el.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0) translate(-50%, ${ty})`;
     }
   });
 

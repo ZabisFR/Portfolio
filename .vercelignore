@@ -3,4 +3,4 @@ tools/
 legacy/
 node_modules/
 .next/
-docs/
+/docs/

@@ -91,6 +91,8 @@ export default function Home() {
   const exit = useCallback(() => {
     if (!ready3D) return;
     try { sessionStorage.removeItem('evanos.entered'); } catch { /* ignore */ }
+    /* la pièce se reconstruit : l'écran de chargement repart de zéro */
+    setLoad(0);
     setPhase('exiting');
   }, [ready3D]);
 
@@ -145,7 +147,9 @@ export default function Home() {
             onLoad={onLoad}
           />
           <div ref={flash} className="scene-flash" aria-hidden="true" />
-          {phase !== 'exiting' && <Loader progress={load} lang={lang} onSkip={skip} />}
+          {/* au démarrage comme au retour depuis l'écran ; « Passer » n'a de
+              sens qu'à l'arrivée */}
+          <Loader progress={load} lang={lang} onSkip={phase === 'exiting' ? undefined : skip} />
 
           {phase === 'scene' && (
             <>

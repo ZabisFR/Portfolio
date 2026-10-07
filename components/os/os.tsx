@@ -82,18 +82,11 @@ function Desktop({ initialWindow, onBackTo3D }: { initialWindow?: string; onBack
 
   const openViewer = useCallback((p: ViewerPayload) => openWin('viewer', p), [openWin]);
 
-  /* Fenêtre demandée par l'URL (lien profond depuis une page projet, etc.) ;
-     sinon, à la première arrivée de la session, le guide de bienvenue. */
+  /* Fenêtre demandée (projet cliqué sur l'étagère, galerie, lien profond) ;
+     sinon, à chaque entrée dans l'écran, le guide de bienvenue. */
   useEffect(() => {
     if (initialWindow) { openWin(initialWindow); return; }
-    let seen = false;
-    try { seen = sessionStorage.getItem('evanos.welcomed') === '1'; } catch { /* ignore */ }
-    if (seen) return;
-    /* La marque n'est posée qu'à l'ouverture effective : si l'effet est
-       annulé avant (React le joue deux fois en développement), le guide
-       s'ouvre quand même au second passage. */
     const t = setTimeout(() => {
-      try { sessionStorage.setItem('evanos.welcomed', '1'); } catch { /* ignore */ }
       sfx.toast();
       openWin('welcome');
     }, 450);
@@ -179,7 +172,7 @@ function Desktop({ initialWindow, onBackTo3D }: { initialWindow?: string; onBack
         {/* sur mobile, pas de barre des tâches : le retour est en tête du bureau */}
         {onBackTo3D && (
           <button className="m-back" onClick={onBackTo3D}>
-            <Icon name="back" size={16} />{lang === 'en' ? 'Back to the 3D room' : 'Retour à la pièce 3D'}
+            <Icon name="back" size={18} />{lang === 'en' ? 'Back to the 3D room' : 'Retour à la pièce 3D'}
           </button>
         )}
         <ul className="desktop-icons">
@@ -260,7 +253,9 @@ function Desktop({ initialWindow, onBackTo3D }: { initialWindow?: string; onBack
           <div className="tb-left">
             <button className="tb-back" onClick={onBackTo3D} title={lang === 'en' ? 'Back to the 3D room' : 'Retour à la pièce 3D'}
               aria-label={lang === 'en' ? 'Back to the 3D room' : 'Retour à la pièce 3D'}>
-              <Icon name="back" size={17} /><span>{lang === 'en' ? 'Back to the 3D room' : 'Retour à la pièce 3D'}</span>
+              <Icon name="back" size={18} />
+              <span className="tb-back-long">{lang === 'en' ? 'Back to the 3D room' : 'Retour à la pièce 3D'}</span>
+              <span className="tb-back-short">{lang === 'en' ? '3D room' : 'Pièce 3D'}</span>
             </button>
           </div>
         )}

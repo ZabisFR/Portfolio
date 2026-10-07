@@ -18,7 +18,9 @@ Auvergne, je cherche un **stage en développement web du 12 avril au
 | | |
 |---|---|
 | ![Le bureau et sa fenêtre de bienvenue](docs/images/bureau.webp) | ![Le carrousel 3D des projets](docs/images/galerie-3d.webp) |
-| **Un bureau lisible par tous** : une fenêtre de bienvenue explique où cliquer, pas besoin de connaître la métaphore Windows. | **Une galerie 3D** : les projets défilent dans un carrousel, au clavier, à la souris ou au doigt. |
+| **Un bureau lisible par tous** : une fenêtre de bienvenue explique où cliquer, pas besoin de connaître la métaphore Windows ; un bouton ramène à la pièce 3D à tout moment. | **Une galerie 3D** : les projets défilent dans un carrousel, au clavier, à la souris ou au doigt. |
+| ![L'écran de chargement : nom, métier et barre d'avancement](docs/images/chargement.webp) | ![La version téléphone : la pièce 3D et le bureau](docs/images/mobile.webp) |
+| **Un écran de chargement** qui suit l'avancement réel de la pièce, pour qu'on ne croie jamais le site vide. | **Pensé pour le téléphone** : annotations replacées, fenêtres plein écran, aide adaptée au tactile. |
 
 - **Huit projets**, dont deux applications Next.js + Supabase en production :
   une app pour apprendre l'arabe égyptien et une app de suivi de musculation.
@@ -30,6 +32,25 @@ Auvergne, je cherche un **stage en développement web du 12 avril au
   référencée par les moteurs de recherche.
 - **Accessible** : la 3D se saute d'une touche, et elle n'est pas chargée du
   tout si le système demande moins d'animations ou ne gère pas WebGL.
+
+## Comment ce projet a été réalisé
+
+**Ma part.** Le concept (un portfolio qui se visite comme un bureau), la
+direction artistique (la pièce chaleureuse, les plantes, la lumière tamisée),
+les contenus et les choix d'ergonomie sont les miens. J'ai fait tester le site
+à mes professeurs et intégré leurs retours (écran de chargement, nom mis en
+avant, repères dans la pièce, bouton de retour), repéré et fait corriger les
+problèmes de la version téléphone, et je gère le déploiement (GitHub → Vercel).
+La première version de ce portfolio, un site statique, est dans
+[`legacy/`](legacy/).
+
+**Avec une IA.** Cette version Next.js + Three.js a été développée avec
+Claude, un assistant de code, que j'ai dirigé : je décris ce que je veux, je
+teste, je refuse ou je fais reprendre ce qui ne va pas. Les mécanismes les plus
+pointus, comme la compilation des shaders en arrière-plan ou l'éclairage
+d'environnement, sont issus de ce travail, et je les documente ci-dessous.
+Savoir mener un projet réel de bout en bout avec ces outils fait partie des
+compétences que je veux montrer.
 
 ## Stack
 
